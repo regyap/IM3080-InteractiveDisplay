@@ -1,0 +1,79 @@
+.forminput{
+    background-color:black;
+
+}
+
+.forminput{
+  
+    background-color:black;
+    display:flex;
+    flex-direction: row;
+    
+    
+    padding-left:13%;
+    padding-right:13%;
+  }
+  .forminput{
+     padding-left:100px;
+     padding-right:100px;
+  }
+  button{
+    /* height: 140px;
+    width:140px; */
+      padding: 6.4px 15px;
+      padding:100px 100px;
+      
+    
+      font-size: 16px;
+      border-radius: 5px;
+  
+      line-height: 1.5715;
+      position: relative;
+      display: inline-block;
+      font-weight: 400;
+      white-space: nowrap;
+      text-align: center;
+      background-image: none;
+      background-color:transparent;
+      color:rgb(104, 191, 175);
+      border: 1px solid grey;
+      box-shadow: 0 2px 0 rgb(0 0 0 / 2%);
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+  
+    width: 280px;
+    height: 280px;
+    border-radius: 50%;
+    box-shadow:
+      inset 0 0 50px #fff,      /* inner white */
+      inset 20px 0 80px #f0f,   /* inner left magenta short */
+      inset -20px 0 80px #0ff,  /* inner right cyan short */
+      inset 20px 0 300px #f0f,  /* inner left magenta broad */
+      inset -20px 0 300px #0ff, /* inner right cyan broad */
+      0 0 50px #fff,            /* outer white */
+      -10px 0 80px #f0f,        /* outer left magenta */
+      10px 0 80px #0ff;         /* outer right cyan */
+  
+      padding-left:100px;
+      padding-right:100px;
+  }
+  
+  button:hover{
+    
+      color:rgb(104, 191, 175);
+      transition: 0.6s ease-in-out;
+      /* border: 4px solid rgb(230, 213, 230); */
+      box-shadow:
+      inset 0 0 50px #fff,      /* inner white */
+      inset 20px 0 80px rgb(189, 20, 20),   /* inner left magenta short */
+      inset -20px 0 80px #0ff,  /* inner right cyan short */
+      inset 20px 0 300px rgb(189, 20, 20),  /* inner left magenta broad */
+      inset -20px 0 300px #0ff, /* inner right cyan broad */
+      0 0 50px #fff,            /* outer white */
+      -10px 0 80px rgb(189, 20, 20),        /* outer left magenta */
+      10px 0 80px #0ff;         /* outer right cyan */
+  
+     
+  }
+  
+  
