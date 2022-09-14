@@ -1,71 +1,43 @@
-import React, {useState, useEffect} from "react";
-import {useRef} from "react"; 
-import './Index.css';
-// import button from './button.js'
-// import button from 'react-bootstrap/esm/button';
+import React, { useState, useEffect } from "react";
+import socketOBJ from "../Socket/SocketIO.js";
+import "./FrontPage.css";
 
+function FrontPage() {
+  // const [facts, setFacts] = useState("");
 
-function FrontPage(){
-    const [facts, setFacts] = useState("");
+  // function request() {
+  //   fetch("https://catfact.ninja/fact")
+  //     .then((response) => response.json())
+  //     .then((data) => {
+  //       setFacts(data["fact"]);
+  //       console.log(data["fact"]);
+  //     });
+  // }
 
-    function okjhgvc()
-    {
-        fetch("https://catfact.ninja/fact")
-        .then((response) => response.json())
-        .then((data)=> {setFacts(data["fact"])
-        console.log(data["fact"])}
+  function emitReq() {
+    socketOBJ.emit("buttonPressed", "Hello World");
+  }
 
-        
-        )
+  useEffect(() => {
+    socketOBJ.on("buttonReply", (msg) => {
+      console.log(msg);
+    });
+  }, []);
 
-        //get states of 2 buttons and check if array is 0
-        // if 0 then post then refresh the array
-
-        // const forminput = useRef("")
-        // const[submitted,setsubmitted] = useState([])
-
-
-        
-        
-        
-    };
-
-        
-
-    return(
-        <>
-
-        
-            <div>{facts}</div>
-            <form >
-            <div class="forminput">
-            
-            <button 
-            
-            name="Default" 
-            value="Default"
-            id="Default"
-            onClick={okjhgvc}
-            > 
-            Default
-
-            </button>
-             </div>
-              <div class="forminput">
-            <button 
-            
-            name="Theme" 
-            value="Theme"
-            id="Theme"
-            onClick={okjhgvc}> 
-            Theme
-            </button>
-            
-            </div>
-            </form>
-            
-            </>
-        
-    );
+  return (
+    <>
+      {/* <div>{facts}</div> */}
+      <div class="forminput">
+        <button name="Default" value="Default" id="Default" onClick={emitReq}>
+          Default
+        </button>
+      </div>
+      <div class="forminput">
+        <button name="Theme" value="Theme" id="Theme" onClick={emitReq}>
+          Theme
+        </button>
+      </div>
+    </>
+  );
 }
 export default FrontPage;

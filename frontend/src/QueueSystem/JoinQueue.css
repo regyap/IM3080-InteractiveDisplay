@@ -1,0 +1,45 @@
+.box {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 10px;
+  background-color: rgb(255, 255, 255);
+  margin: 2%;
+  width: 35%;
+  height: 50%;
+}
+
+.loginLabel {
+  font-weight: bold;
+  font-size: xx-large;
+}
+
+.fLabel {
+  font-size: large;
+}
+
+.lcomponents {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  /* background-color: aqua; */
+  width: 98%;
+  margin: 2%;
+}
+
+.logo {
+  width: 40%;
+  height: 80%;
+  margin-bottom: 2%;
+}
+
+.imageCenter {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 8%;
+  width: 100%;
+}
