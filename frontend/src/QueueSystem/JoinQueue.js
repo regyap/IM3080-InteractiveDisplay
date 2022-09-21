@@ -4,12 +4,22 @@ import Logo from "../assets/logo.png";
 import "./JoinQueue.css";
 
 function JoinQueue() {
-  var datetime = new Date();
   const [name, setName] = useState("");
+
+  useEffect(() => {
+    socketOBJ.on("joinQueue", (res) => {
+      if (res["id"] === socketOBJ.id && res["status"] === "success") {
+        console.log("Queue Joined");
+      } else if (res["id"] === socketOBJ.id && res["status"] === "fail") {
+        alert(res["err"]);
+      }
+    });
+  }, []);
 
   const joinQueue = (e) => {
     e.preventDefault();
     const data = { username: name, id: socketOBJ.id };
+    console.log(data);
     socketOBJ.emit("joinQueue", data);
   };
 
@@ -24,13 +34,8 @@ function JoinQueue() {
       </div>
       <form className="lcomponents" onSubmit={joinQueue}>
         <label className="fLabel">Enter Your Name:</label>
-        <input
-          type="text"
-          name="name"
-          onChange={(e) => setName(e.target.value)}
-          required
-        />
-        <input style={{ marginTop: "2%" }} type="submit" />
+        <input onChange={(e) => setName(e.target.value)} required />
+        <input style={{ marginTop: "2%" }} type="submit" value="Join Queue" />
       </form>
     </div>
   );
