@@ -52,6 +52,8 @@ void setup() {
   strip.begin();
   strip.show();
   strip.setBrightness(brightness);
+
+  Serial.begin(9600);
   pinMode(BUTTON_PIN, INPUT);
 }
 
@@ -112,6 +114,35 @@ void CenterRipple(long elapsedTime) {
   }
 }
 
+void rainbow(uint8_t wait) {
+  uint16_t i;
+  uint16_t j;
+
+  for(j=0; j<256; j++) {
+    for(i=0; i<strip.numPixels(); i++) {
+      Serial.println("Without &: " + String(i+j));
+      Serial.println((i+j) & 255);
+      
+      strip.setPixelColor(i, Wheel((i+j)));
+    }
+    strip.show();
+    delay(wait);
+  }
+}
+
+uint32_t Wheel(byte WheelPos) {
+  WheelPos = 255 - WheelPos;
+  if(WheelPos < 85) {
+    return strip.Color(255 - WheelPos * 3, 0, WheelPos * 3);
+  }
+  if(WheelPos < 170) {
+    WheelPos -= 85;
+    return strip.Color(0, WheelPos * 3, 255 - WheelPos * 3);
+  }
+  WheelPos -= 170;
+  return strip.Color(WheelPos * 3, 255 - WheelPos * 3, 0);
+}
+
 void loop() {
   // put your main code here, to run repeatedly:
   long elapsedTime = millis() - lastTime; //get time elapsed
@@ -121,7 +152,7 @@ void loop() {
   if (buttonState == HIGH) {
     CenterRipple(elapsedTime);
   }else{
-    strip.clear();
-    strip.show();
+    strip.setPin(5);
+    rainbow(20);
   }
 }
