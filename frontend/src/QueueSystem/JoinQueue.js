@@ -1,15 +1,18 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import socketOBJ from "../Socket/SocketIO.js";
 import Logo from "../assets/logo.png";
 import "./JoinQueue.css";
 
 function JoinQueue() {
   const [name, setName] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     socketOBJ.on("joinQueue", (res) => {
       if (res["id"] === socketOBJ.id && res["status"] === "success") {
         console.log("Queue Joined");
+        navigate("/control");
       } else if (res["id"] === socketOBJ.id && res["status"] === "fail") {
         alert(res["err"]);
       }

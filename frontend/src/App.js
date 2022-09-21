@@ -23,6 +23,7 @@ function App() {
       <Router>
         <Routes>
           <Route path="/" element={<JoinQueue />} />
+          {/* <Route path="/queue" element={<Queue />} /> */}
           <Route path="/control" element={<FrontPage />} />
         </Routes>
       </Router>

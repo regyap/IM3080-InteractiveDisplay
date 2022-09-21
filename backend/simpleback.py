@@ -25,28 +25,6 @@ def index():
     print(usernameList)
     return str(usernameList)
 
-# @app.route('/joinQueue', methods=["POST"])          
-# def joinQueue():
-#     userData = request.get_json()
-#     print(userData["username"])
-#     db.session.add(Queue(username=userData["username"], time=userData["time"]))
-#     db.session.commit()
-#     response = {"status": "success"}
-#     return (response, 200)
-
-# @app.route('/exitQueue', methods=["POST"])          
-# def exitQueue():
-#     userData = request.get_json()
-#     Queue.query.filter_by(username = userData["username"]).delete()
-#     db.session.commit()
-#     response = {"status": "success"}
-#     return (response, 200)
-
-# @socket.on('queueStatus')
-# def queueStatus(msg):
-#     # Add to Queue DB if success, send this
-#     socket.send(data = msg["username"] + " registered!", to= msg["id"])
-
 @socket.on('joinQueue')
 def joinQueue(msg):
     duplicateCheck = Queue.query.filter_by(id = msg["id"]).count()
@@ -69,9 +47,10 @@ def backgroundQueueSocket():
     while True:
         socket.sleep(5)
         usernames = db.session.query(Queue).all()
+        queueData = []
         for user in usernames:
-            print(user.userData())
-
+            queueData.append(user.userData())
+        print(queueData)
 
 if __name__ == '__main__':
     # app.run(host='0.0.0.0', port=5000, threaded=True)
