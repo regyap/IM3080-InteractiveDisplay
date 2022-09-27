@@ -2,6 +2,7 @@ from flask import Flask, Response, request, jsonify
 from flask_cors import CORS
 from flask_socketio import SocketIO
 from flask_sqlalchemy import SQLAlchemy
+import os
 
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
@@ -36,24 +37,41 @@ def joinQueue(msg):
     else:
         reply = {"status": "fail" , "id": msg["id"], "err":"Duplicate ID"}
         socket.emit("joinQueue", data = reply, to= msg["id"])
-    
+
+@socket.on('exitQueue')
+def exitQueue():
+    Queue.query.filter_by(id=request.sid).delete()
+    db.session.commit()
+    print(request.sid + " exited queue")
+
+@socket.on('connect')
+def disconnect():
+    Queue.query.filter_by(id=request.sid).delete()
+    db.session.commit()
+    print(request.sid + " connected")
+
 @socket.on('disconnect')
 def disconnect():
     Queue.query.filter_by(id=request.sid).delete()
     db.session.commit()
-    print(request.sid)
+    print(request.sid + " disconnected")
 
 def backgroundQueueSocket():
     while True:
-        socket.sleep(5)
+        socket.sleep(1)
         usernames = db.session.query(Queue).all()
         queueData = []
         for user in usernames:
             queueData.append(user.userData())
-        print(queueData)
+        res = {"data": queueData}
+        socket.emit("queue", data = res)
+        print("Current Queue:")
+        print(str(queueData) + "\n")
 
 if __name__ == '__main__':
     # app.run(host='0.0.0.0', port=5000, threaded=True)
+    if os.path.exists("app.db"):
+        os.remove("app.db")
     db.create_all()
     socket.start_background_task(target=backgroundQueueSocket)
     socket.run(app, host='0.0.0.0', port=5000)
