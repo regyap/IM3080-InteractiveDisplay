@@ -12,7 +12,7 @@ function JoinQueue() {
     socketOBJ.on("joinQueue", (res) => {
       if (res["id"] === socketOBJ.id && res["status"] === "success") {
         console.log("Queue Joined");
-        navigate("/control");
+        navigate("/queue");
       } else if (res["id"] === socketOBJ.id && res["status"] === "fail") {
         alert(res["err"]);
       }
