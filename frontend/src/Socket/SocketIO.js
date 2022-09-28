@@ -1,5 +1,6 @@
 import io from "socket.io-client";
+import { SERVER_IP } from "../Constant";
 
-const socketOBJ = io("http://localhost:5000", { transports: ["websocket"] });
+const socketOBJ = io(SERVER_IP, { transports: ["websocket"] });
 
 export default socketOBJ;
