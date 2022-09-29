@@ -3,6 +3,7 @@ from flask_cors import CORS
 from flask_socketio import SocketIO
 from flask_sqlalchemy import SQLAlchemy
 import datetime
+import serial
 import os
 
 app = Flask(__name__)
@@ -56,10 +57,10 @@ def exitQueue():
     print(request.sid + " exited queue")
 
 @socket.on('buttonPressed')
-def disconnect():
-    Queue.query.filter_by(id=request.sid).delete()
-    db.session.commit()
-    print(request.sid + " disconnected")
+def buttonPressed(data):
+    text = data
+    ser.write(text.encode("utf-8"))
+    print(data + " transmited from frontend")
 
 @socket.on('connect')
 def disconnect():
@@ -117,6 +118,8 @@ if __name__ == '__main__':
     # app.run(host='0.0.0.0', port=5000, threaded=True)
     if os.path.exists("app.db"):
         os.remove("app.db")
+    # ser = serial.Serial("/dev/ttyACM0", 9600, timeout=1)
+    # ser.reset_input_buffer()
     db.create_all()
     socket.start_background_task(target=backgroundQueueSocket)
     socket.start_background_task(target=sessionSocket)
