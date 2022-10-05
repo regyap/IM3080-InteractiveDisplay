@@ -35,13 +35,13 @@
 #define LED_PIN25 34
 
 
-#define LED_COUNT 7
+#define LED_COUNT 40
 
 #define BUTTON_PIN 8
 
 Adafruit_NeoPixel strip(LED_COUNT, LED_PIN1, NEO_GRB + NEO_KHZ800);
 
-int brightness = 50;;
+int brightness = 20;
 int wait = 1000;
 int buttonState = 0;
 
@@ -114,32 +114,44 @@ void CenterRipple(long elapsedTime) {
   }
 }
 
-void rainbow(uint8_t wait) {
-  uint16_t i;
-  uint16_t j;
+void rainbow(long elapsedTime) {      //wait = 20
+  static int i = 0;
+  static int j = 0 ;
+  static long RainbowTime = 0;
+  RainbowTime += elapsedTime;
 
-  for(j=0; j<256; j++) {
-    for(i=0; i<strip.numPixels(); i++) {
-      Serial.println("Without &: " + String(i+j));
-      Serial.println((i+j) & 255);
-      
-      strip.setPixelColor(i, Wheel((i+j)));
+  if (RainbowTime >= 100) {
+    if (i <= strip.numPixels()) {
+      i++;
     }
+    else if (i >= strip.numPixels()) {
+      j++;
+    }
+    if (i + j >= 256) {
+      i = 0;
+      j = 0;
+    }
+    strip.fill(Wheel((i + j)));
+    //    Serial.println(String(i + j));
     strip.show();
-    delay(wait);
+
+    RainbowTime -= 100;
   }
 }
 
 uint32_t Wheel(byte WheelPos) {
   WheelPos = 255 - WheelPos;
-  if(WheelPos < 85) {
+  if (WheelPos < 85) {
+    //    Serial.println("red to blue -" + String(WheelPos * 3));
     return strip.Color(255 - WheelPos * 3, 0, WheelPos * 3);
   }
-  if(WheelPos < 170) {
+  if (WheelPos < 170) {
     WheelPos -= 85;
+    //    Serial.println("blue to green =" + String(WheelPos * 3));
     return strip.Color(0, WheelPos * 3, 255 - WheelPos * 3);
   }
   WheelPos -= 170;
+  //  Serial.println("green to red _" + String(WheelPos * 3));
   return strip.Color(WheelPos * 3, 255 - WheelPos * 3, 0);
 }
 
@@ -148,11 +160,22 @@ void loop() {
   long elapsedTime = millis() - lastTime; //get time elapsed
   lastTime += elapsedTime;
 
-  buttonState = digitalRead(BUTTON_PIN);
-  if (buttonState == HIGH) {
-    CenterRipple(elapsedTime);
-  }else{
-    strip.setPin(5);
-    rainbow(20);
+    //    strip.setPin(22);
+    //    strip.fill(strip.Color(255,255,0));
+    //    strip.show();
+
+    strip.setPin(2);
+    rainbow(elapsedTime);
+    //    Serial.println("2");
+
+    strip.setPin(3);
+    rainbow(elapsedTime);
+    //    Serial.println("3");
+
+    strip.setPin(4);
+    rainbow(elapsedTime);
+    //    Serial.println("4");
+
+
   }
 }
