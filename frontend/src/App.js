@@ -6,6 +6,7 @@ import FrontPage from "./IndexPage/FrontPage.js";
 import socketOBJ from "./Socket/SocketIO.js";
 import JoinQueue from "./QueueSystem/JoinQueue";
 import Queue from "./QueueSystem/Queue";
+import RGB from "./IndexPage/RGB";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 function App() {
@@ -41,6 +42,7 @@ function App() {
         <Route path="/" element={<JoinQueue />} />
         <Route path="/queue" element={<Queue />} />
         {inSession ? <Route path="/control" element={<FrontPage />} /> : <></>}
+        {inSession ? <Route path="/control/rgb" element={<RGB />} /> : <></>}
       </Routes>
     </body>
   );
