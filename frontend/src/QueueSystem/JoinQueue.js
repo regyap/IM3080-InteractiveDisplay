@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import socketOBJ from "../Socket/SocketIO.js";
-import Logo from "../assets/logo.png";
+import Logo from "../assets/ntu2.png";
 import "./JoinQueue.css";
 
 function JoinQueue() {
@@ -32,11 +32,9 @@ function JoinQueue() {
         <img src={Logo} className="logo" />
       </div>
 
-      <div className="lcomponents">
-        <label className="loginLabel">Queue System</label>
-      </div>
+    
       <form className="lcomponents" onSubmit={joinQueue}>
-        <label className="fLabel">Enter Your Name:</label>
+        <label className="fLabel">Enter Name:</label>
         <input onChange={(e) => setName(e.target.value)} required />
         <input style={{ marginTop: "2%" }} type="submit" value="Join Queue" />
       </form>
