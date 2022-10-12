@@ -7,7 +7,7 @@
 #define LED_PIN3 4
 #define LED_PIN4 5
 #define LED_PIN5 6
-#define LED_COUNT 15
+#define LED_COUNT 60
 #define BUTTON_PIN 8
 
 Adafruit_NeoPixel strip(LED_COUNT, LED_PIN1, NEO_GRB + NEO_KHZ800);
@@ -15,6 +15,8 @@ Adafruit_NeoPixel strip(LED_COUNT, LED_PIN1, NEO_GRB + NEO_KHZ800);
 int brightness = 200;
 int wait = 1000;
 int buttonState = 0;
+
+
 
 unsigned long lastTime = 0;
 long beat[] = {17, 484, 810, 2683, 4180, 4738, 6003, 6359, 6721, 7952, 8488,
@@ -88,10 +90,10 @@ void blink(long elapsedTime) {
     if (blinkTime <= 60) {
       if (blinkTime <= 10) {
         strip.setBrightness(blinkTime * 20);
-      } 
-//      else if (blinkTime <= 30) {
-//        strip.setBrightness(200);
-//      } 
+      }
+      //      else if (blinkTime <= 30) {
+      //        strip.setBrightness(200);
+      //      }
       else {
         strip.setBrightness(200 - (blinkTime * 4));
       }
@@ -114,16 +116,58 @@ void blink(long elapsedTime) {
   }
 }
 
+void raise(long elapsedTime, int pin) {
+//  strip.clear();
+//  strip.show();
+  strip.setPin(pin);
+  static long ledTime[25];
+  
+  static long raiseTime = 0;
+  static long pixel = 0;
+
+//  if(ledTime[pin] == null){
+//    ledTime[pin] = elapsedTime;
+//  }else{
+    ledTime[pin] += elapsedTime;
+//  }
+
+  if (ledTime[pin] >= beat[i]) {
+    raiseTime = ledTime[pin] - beat[i];
+    if (raiseTime <= 400) {
+      if (raiseTime/400 == 0) {
+        strip.setPixelColor(pixel, 0, 0, 38);
+        pixel++;
+      }
+
+      strip.show();
+      Serial.println("raiseTime :" + String(raiseTime));
+    } else {
+      strip.clear();
+      strip.show();
+      pixel = 0;
+      i += 1;
+    }
+
+  }
+  else {
+    strip.clear();
+    strip.show();
+  }
+}
+
 void loop() {
   // put your main code here, to run repeatedly:
   long elapsedTime = millis() - lastTime;
   lastTime = lastTime + elapsedTime;
-  strip.setPin(3);
-  blink(elapsedTime);
-  strip.setPin(4);
-  blink(elapsedTime);
-  strip.setPin(5);
-  blink(elapsedTime);
+  
+    raise(elapsedTime,2);
+    raise(elapsedTime,3);
+    raise(elapsedTime,4);
+
+//  strip.setPin(3);
+//  strip.fill(strip.Color(0, 0, 255));
+//  strip.show();
+
 
   //  Serial.println(elapsedTime);
 
