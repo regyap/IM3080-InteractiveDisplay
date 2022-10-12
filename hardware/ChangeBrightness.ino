@@ -56,7 +56,7 @@ int wait = 1000;
 
 //for sensors
 int maxDistance = 10;
-int triggeredNo = 0
+int triggeredNo = 0;
 
 //For multithreading
 long lastTime = millis();
@@ -460,21 +460,20 @@ void rainbow(long elapsedTime) {      //wait = 20
   if (RainbowTime >= 100) {
     for (int n=0; n<25; n++) {
       strip.setPin(ledPin[n]);
-    }
-    if (i <= strip.numPixels()) {
-      i++;
-    }
-    else if (i >= strip.numPixels()) {
-      j++;
-    }
-    if (i + j >= 256) {
-      i = 0;
-      j = 0;
-    }
-    strip.fill(Wheel((i + j)));
+      if (i <= strip.numPixels()) {
+       i++;
+      }
+      else if (i >= strip.numPixels()) {
+        j++;
+      }
+      if (i + j >= 256) {
+        i = 0;
+        j = 0;
+     }
+      strip.fill(Wheel((i + j)));
     //    Serial.println(String(i + j));
-    strip.show();
-
+     strip.show();
+    }
     RainbowTime -= 100;
   }
 }
