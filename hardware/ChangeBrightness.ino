@@ -107,7 +107,6 @@ bool SensorIsTriggered(int trigPin, int echoPin, long elapsedMS) {
 
 void ChangeBrightness(int pin, long elapsedMS) {
   strip.setPin(pin);
-  strip.fill(strip.Color(0, 0, 127));
   strip.setBrightness(brightnessHigh);
   strip.show();
 
