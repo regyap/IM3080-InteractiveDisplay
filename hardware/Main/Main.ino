@@ -1,4 +1,5 @@
 #include <Adafruit_NeoPixel.h>
+#include <Arduino_JSON.h>
 #ifdef __AVR__
 #include <avr/power.h> // Required for 16 MHz Adafruit Trinket
 #endif
@@ -97,18 +98,22 @@ void setup() {
   strip.setBrightness(brightness);
 
   Serial.begin(9600);
-  //  pinMode(BUTTON_PIN, INPUT);
 }
 
 // from rasberry pi to arduino
-String data;
+JSONVar payload;
+String mode;
 
 void loop() {
-  // put your main code here, to run repeatedly:
+  if (Serial.available() > 0) {
+    payload = JSON.parse(Serial.readStringUntil('\n'));
+    mode = payload["mode"];
+  }
+
   long elapsedTime = millis() - lastTime;
   lastTime = lastTime + elapsedTime;
 
-  if (data == "blink") {
+  if (mode == "blink") {
     // --- need update ---
     strip.setPin(3);
     blink(elapsedTime);
@@ -117,11 +122,11 @@ void loop() {
     strip.setPin(5);
     blink(elapsedTime);
   }
-  else if (data == "CenterRipple") {
+  else if (mode == "CenterRipple") {
     // single colour ripple
     CenterRipple(elapsedTime);
   }
-  else if (data == "Rainbow") {
+  else if (mode == "Rainbow") {
     // --- [ just a placeholder ] ---
     strip.setPin(2);
     rainbow(elapsedTime);
@@ -129,9 +134,14 @@ void loop() {
     rainbow(elapsedTime);
     strip.setPin(4);
     rainbow(elapsedTime);
-  }
-  else {
-    data = "";
+  } else if (mode == "rgb") {
+    uint32_t color = strip.Color(int(payload["red"]), int(payload["green"]), int(payload["blue"]));
+    strip.setPin(2);
+    strip.fill(color);
+    strip.setPin(3);
+    strip.fill(color);
+    strip.setPin(4);
+    strip.fill(color);
   }
 }
 
@@ -141,7 +151,7 @@ void loop() {
 
 
 
-// function      -------- blink -------- 
+// function      -------- blink --------
 
 void blink(long elapsedTime) {
   static long blinkTime = 0;
@@ -172,7 +182,7 @@ void blink(long elapsedTime) {
 }
 
 
-// function    -------- CenterRipple -------- 
+// function    -------- CenterRipple --------
 
 void TurnOn(int pin, long elapsedMS) {
   strip.setPin(pin);
@@ -232,7 +242,7 @@ void CenterRipple(long elapsedTime) {
 
 
 
-// function     -------- rainbow -------- 
+// function     -------- rainbow --------
 
 void rainbow(long elapsedTime) {      //wait = 20
   static int i = 0;
