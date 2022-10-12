@@ -3,21 +3,50 @@
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
-  border-radius: 10px;
-  background-color: rgb(255, 255, 255);
+  border-radius: 5px;
+  /* background-color: hsla(0, 0%, 0%, 0.7); */
+  background: radial-gradient(black, black,transparent,transparent);
   margin: 2%;
-  width: 35%;
-  height: 50%;
+  width: 100%;
+  height: 100%;
+  color:white;
+  font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  
+  
+
 }
+
+/* glowing text */
+.glow {
+  
+}
+
+
 
 .loginLabel {
   font-weight: bold;
   font-size: xx-large;
+  margin-top: 6%; 
+
 }
 
 .fLabel {
-  font-size: large;
+  /* font-size: large; */
+  
+  /* font-size: 80px; */
+  font-kerning: 10px;
+ color: #fff;
+  text-shadow:
+      0 0 7px #fff,
+      0 0 10px #fff,
+      0 0 21px #fff,
+      0 0 42px #0fa,
+      0 0 82px #0fa,
+      0 0 92px #0fa,
+      0 0 102px #0fa,
+      0 0 151px #0fa;
 }
+
 
 .lcomponents {
   display: flex;
@@ -26,20 +55,34 @@
   align-items: center;
   /* background-color: aqua; */
   width: 98%;
-  margin: 2%;
+   
+
+  /* margin: 2%; */
 }
 
-.logo {
-  width: 40%;
+.box .logo {
+  
+  width: 35%;
   height: 80%;
-  margin-bottom: 2%;
+  margin-bottom: 1%;
+  margin-top: 9%;
+  border-radius:60px;
+  
 }
 
-.imageCenter {
+
+.box .imageCenter {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin-top: 8%;
   width: 100%;
+}
+
+.box input[type=submit]
+{
+
+}
+{
+
 }
