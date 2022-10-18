@@ -23,24 +23,27 @@ function FrontPage() {
           <Card.Title>Time Left</Card.Title>
         </Card.Body>
       </Card>
-      <div class="forminput">
+      
+      <div className="forminput">
         <button
           value="Default"
-          class="fButton"
+          className="fButton"
           onClick={() => emitReq("default")}
         >
           Default
         </button>
-      </div>
-      <div class="forminput">
-        <button value="Theme" class="fButton" onClick={() => emitReq("theme")}>
+    
+        <button 
+        value="Theme" 
+        className="fButton" 
+        onClick={() => emitReq("theme")}>
           Theme
         </button>
       </div>
-      <div class="forminput">
+      <div className="forminput">
         <button
           value="Custom"
-          class="fButton"
+          className="fButton"
           onClick={() => navigate("/control/rgb")}
         >
           Custom
