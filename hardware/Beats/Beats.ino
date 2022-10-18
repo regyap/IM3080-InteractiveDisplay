@@ -10,7 +10,7 @@
 #define LED_COUNT 60
 #define BUTTON_PIN 8
 
-Adafruit_NeoPixel strip(LED_COUNT, LED_PIN1, NEO_GRB + NEO_KHZ800);
+Adafruit_NeoPixel strip(LED_COUNT, LED_PIN1, NEO_BRG + NEO_KHZ800);
 
 int brightness = 200;
 int wait = 1000;
@@ -134,8 +134,8 @@ void raise(long elapsedTime, int pin) {
   if (ledTime[pin] >= beat[i]) {
     raiseTime = ledTime[pin] - beat[i];
     if (raiseTime <= 400) {
-      if (raiseTime/400 == 0) {
-        strip.setPixelColor(pixel, 0, 0, 38);
+      if (raiseTime%(400/60) <= 10) {
+        strip.setPixelColor(pixel, 255, 0, 255);
         pixel++;
       }
 
@@ -163,9 +163,11 @@ void loop() {
     raise(elapsedTime,2);
     raise(elapsedTime,3);
     raise(elapsedTime,4);
+    raise(elapsedTime,5);
+    raise(elapsedTime,6);
 
-//  strip.setPin(3);
-//  strip.fill(strip.Color(0, 0, 255));
+//  strip.setPin(6);
+//  strip.fill(strip.Color(255, 0, 0));
 //  strip.show();
 
 

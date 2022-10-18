@@ -39,7 +39,7 @@
 
 #define BUTTON_PIN 8
 
-Adafruit_NeoPixel strip(LED_COUNT, LED_PIN1, NEO_GRB + NEO_KHZ800);
+Adafruit_NeoPixel strip(LED_COUNT, LED_PIN1, NEO_BRG + NEO_KHZ800);
 
 int brightness = 20;
 int wait = 1000;
@@ -176,6 +176,8 @@ void loop() {
     rainbow(elapsedTime);
     //    Serial.println("4");
 
-
-  }
+    strip.setPin(6);
+    rainbow(elapsedTime);
+    //    Serial.println("6");
+  
 }
