@@ -23,7 +23,7 @@ long beat[] = {17, 484, 810, 2683, 4180, 4738, 6003, 6359, 6721, 7952, 8488,
 long beat1[] = {15, 728, 1459, 2207, 2966, 3671, 4467, 4850, 5217, 5973, 6679,
                 7489, 7861, 8968, 9672, 10463, 10850, 11954, 12664, 13490, 13850,
                 14233, 14966, 15656, 16474, 16856, 17979, 18649, 19483, 19844,
-                20218, 20978, 21673, 22469, 22854, 23221, 23978, 24659, 25475,
+                1, 20978, 21673, 22469, 22854, 23221, 23978, 24659, 25475,
                 25859, 26956, 27657, 28480, 28829, 29229, 29979, 30649, 31464,
                 31844, 32239, 32967, 33668, 34480, 34843, 35982, 36671, 37489,
                 37848, 38211, 38980, 39638, 40467, 40855, 41964, 42656, 43476,
@@ -46,9 +46,9 @@ long beat1[] = {15, 728, 1459, 2207, 2966, 3671, 4467, 4850, 5217, 5973, 6679,
 int LED_COUNT = 60;
 unsigned long lastTime = 0;
 int brightness = 200;
-int ledPinMin = 22;
-int ledPinMax = 30;
-int duration = 1000;
+int ledPinMin = 2;
+int ledPinMax = 4;
+int duration = 5000;
 
 Adafruit_NeoPixel strip(LED_COUNT, ledPinMin, NEO_GRB + NEO_KHZ800);
 
@@ -57,6 +57,7 @@ void setup() {
   strip.show();
   strip.setBrightness(brightness);
   Serial.begin(9600);
+  Serial.println("SETUP");
 }
 
 void loop() {
@@ -83,47 +84,61 @@ void raise(long elapsedTime, long beat[]) {
 
   functionTime = functionTime + elapsedTime;
 
+
   if (functionTime > beat[beatCounter]) {
+    Serial.println("Inside functiontime to get beats");
     queue[pushNum] = 0;
 
     //Managing random number
     int randNumber = random(ledPinMin, ledPinMax); //Choose random tube to light up
-    while (true) {  //Checking for duplicate rand num
-      if (pushNum > popNum) { //Handle normal case
+
+    //Checking for duplicate rand num
+    bool duplicateCheck = true;
+    while (duplicateCheck) {
+      Serial.println("Inside while");
+      if (pushNum == popNum) {
+        duplicateCheck = false;
+      } else if (pushNum > popNum) { //Handle normal case
+        //        Serial.println("HELOOOOOOOOOOOOOOOOOOOOOOOO  " + String(popNum));
         for (int j = popNum; j < pushNum; j++) {
           if (queue[j] == randNumber) {
-            randNumber = random(ledPinMin, ledPinMax)
-            continue;
-          } else {
+            //            Serial.println(String(j) + "  HELOOOOOOOOOOOOOOOOOOOOOOOO  " + String(pushNum));
+            randNumber = random(ledPinMin, ledPinMax);
             break;
+          } else if (j == pushNum - 1) {
+            duplicateCheck = false;
           }
         }
       } else if (pushNum < popNum) { //Handle Circular Buffer situation
         for (int j = popNum; j <= 25; j++) {
           if (queue[j] == randNumber) {
-            randNumber = random(ledPinMin, ledPinMax)
-            continue;
-          } else {
+            randNumber = random(ledPinMin, ledPinMax);
             break;
+          } else if (j == pushNum - 1) {
+            duplicateCheck = false;
           }
         }
         for (int j = 0; j < pushNum; j++) {
           if (queue[j] == randNumber) {
-            randNumber = random(ledPinMin, ledPinMax)
-            continue;
-          } else {
+            randNumber = random(ledPinMin, ledPinMax);
             break;
+          } else if (j == pushNum - 1) {
+            duplicateCheck = false;
           }
         }
       }
     }
 
+
+
     //Pushing Random number to queue
+    Serial.println("Tube Number: " + String(pushNum));
+    Serial.println("Random Number: " + String(randNumber));
     queue[pushNum] = randNumber;  //Add the tube number to queue to keep track
     strip.setPin(randNumber);
-    strip.fill(strip.Color(255,255,255));
-    strip.setBrightness(0);
-    
+    strip.fill(strip.Color(255, 255, 255));
+    strip.setBrightness(16.2);
+
     //Update push variable
     if (pushNum == 25) {
       pushNum = 0;
@@ -139,8 +154,10 @@ void raise(long elapsedTime, long beat[]) {
 
   //Else, manage tube still in pattern
   if (pushNum > popNum) { //Handle normal case
+    //    Serial.println("  HELOOOOOOOOOOOOOOOOOOOOOOOO  ");
     for (int j = popNum; j < pushNum; j++) {
       int tube = queue[j];
+      //      Serial.println("light, tube :" + String(tube));
       strip.setPin(tube);
       ledsTime[tube] += elapsedTime;
       int tubeTime = ledsTime[tube];
@@ -154,7 +171,8 @@ void raise(long elapsedTime, long beat[]) {
           popNum++;
         }
       } else {  //else, change brightness of tube in pattern
-        strip.setBrightness((tubeTime / duration * 255));
+        strip.setBrightness((double(tubeTime) / duration) * 255);
+        Serial.println("brightness :" + String((double(tubeTime) / duration) * 255));
         strip.show();
       }
     }
@@ -174,7 +192,7 @@ void raise(long elapsedTime, long beat[]) {
           popNum++;
         }
       } else {  //else, change brightness of tube in pattern
-        strip.setBrightness((tubeTime / duration * 255));
+        strip.setBrightness((double(tubeTime) / duration) * 255);
         strip.show();
       }
     }
@@ -194,7 +212,7 @@ void raise(long elapsedTime, long beat[]) {
           popNum++;
         }
       } else {  //else, change brightness of tube in pattern
-        strip.setBrightness((tubeTime / duration * 255));
+        strip.setBrightness((double(tubeTime) / duration) * 255);
         strip.show();
       }
     }
