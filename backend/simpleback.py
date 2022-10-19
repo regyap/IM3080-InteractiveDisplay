@@ -11,7 +11,8 @@ CORS(app, resources={r"/*": {"origins": "*"}})
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'
 socket = SocketIO(app=app, cors_allowed_origins='*')
 db = SQLAlchemy(app)
-sessionDuration = datetime.timedelta(minutes=1)
+duration = 1
+sessionDuration = datetime.timedelta(minutes=duration)
 
 class Queue(db.Model):
     id = db.Column(db.String, primary_key=True)
@@ -97,7 +98,7 @@ def sessionSocket():
             userData = db.session.query(Queue).first()
             print(userData.userData)
             db.session.add(Session(id=userData.id, username=userData.username, iat=now))
-            res = {"data":{"id":userData.id, "username":userData.username, "iat":str(now)}}
+            res = {"data":{"id":userData.id, "username":userData.username, "iat":str(now.isoformat()), "expiry":(str((now +datetime.timedelta(minutes=duration)).isoformat()))}}
             socket.emit("enterSession", data = res, to=userData.id) #emit smth to trigger session
             Queue.query.filter_by(id=userData.id).delete()
             db.session.commit()

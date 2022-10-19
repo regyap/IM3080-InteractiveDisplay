@@ -4,8 +4,24 @@ import Card from "react-bootstrap/Card";
 import { useNavigate } from "react-router-dom";
 import "./FrontPage.css";
 
-function FrontPage() {
+function FrontPage(props) {
   const navigate = useNavigate();
+  const [timeLeft, setTimeLeft] = useState("");
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const currentTime = Date.now();
+      if (props.expiry - currentTime > 0) {
+        const minutesLeft = parseInt((props.expiry - currentTime) / 1000 / 60);
+        const secondsLeft = parseInt(
+          (props.expiry - currentTime) / 1000 - minutesLeft * 60
+        );
+        setTimeLeft(minutesLeft + "m " + secondsLeft + "s");
+      }
+    }, 1000);
+    return () => clearInterval(interval);
+  }, []);
+
   function emitReq(button) {
     const data = { mode: button };
     socketOBJ.emit("buttonPressed", data);
@@ -21,7 +37,7 @@ function FrontPage() {
         }}
       >
         <Card.Body>
-          <Card.Title>Time Left</Card.Title>
+          <Card.Title>{"Time Left " + timeLeft}</Card.Title>
         </Card.Body>
       </Card>
       <div class="forminput">
@@ -35,7 +51,7 @@ function FrontPage() {
       </div>
       <div class="forminput">
         <button value="Theme" class="fButton" onClick={() => emitReq("theme")}>
-          Theme
+          {timeLeft}
         </button>
       </div>
       <div class="forminput">
