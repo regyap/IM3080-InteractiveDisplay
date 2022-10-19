@@ -7,7 +7,8 @@ import "./FrontPage.css";
 function FrontPage() {
   const navigate = useNavigate();
   function emitReq(button) {
-    socketOBJ.emit("buttonPressed", button);
+    const data = { mode: button };
+    socketOBJ.emit("buttonPressed", data);
   }
 
   return (
