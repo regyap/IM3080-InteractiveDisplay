@@ -40,10 +40,11 @@ function FrontPage(props) {
           <Card.Title>{"Time Left " + timeLeft}</Card.Title>
         </Card.Body>
       </Card>
-      <div class="forminput">
+
+      <div className="forminput">
         <button
           value="Default"
-          class="fButton"
+          className="fButton"
           onClick={() => emitReq("default")}
         >
           Default
@@ -54,10 +55,10 @@ function FrontPage(props) {
           {timeLeft}
         </button>
       </div>
-      <div class="forminput">
+      <div className="forminput">
         <button
           value="Custom"
-          class="fButton"
+          className="fButton"
           onClick={() => navigate("/control/rgb")}
         >
           Custom
