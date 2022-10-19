@@ -49,10 +49,9 @@ function FrontPage(props) {
         >
           Default
         </button>
-      </div>
-      <div class="forminput">
+      
         <button value="Theme" class="fButton" onClick={() => emitReq("theme")}>
-          {timeLeft}
+          Theme
         </button>
       </div>
       <div className="forminput">
