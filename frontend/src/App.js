@@ -12,7 +12,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 function App() {
   const navigate = useNavigate();
   const [inSession, setInSession] = useState(false);
-  const [iat, setIAT] = useState("");
+  const [expiry, setExpiry] = useState("");
   useEffect(() => {
     socketOBJ.on("connect", () => {
       console.log("Web Socket Establish: " + socketOBJ.id);
@@ -22,7 +22,7 @@ function App() {
     });
     socketOBJ.on("enterSession", (res) => {
       console.log(res);
-      setIAT(Date.now());
+      setExpiry(Date.parse(res["data"]["expiry"]));
       navigate("/control");
       setInSession(true);
     });
@@ -41,7 +41,14 @@ function App() {
       <Routes>
         <Route path="/" element={<JoinQueue />} />
         <Route path="/queue" element={<Queue />} />
-        {inSession ? <Route path="/control" element={<FrontPage />} /> : <></>}
+        {inSession ? (
+          <Route
+            path="/control"
+            element={<FrontPage expiry={expiry} setSession={setInSession} />}
+          />
+        ) : (
+          <></>
+        )}
         {inSession ? <Route path="/control/rgb" element={<RGB />} /> : <></>}
       </Routes>
     </body>
