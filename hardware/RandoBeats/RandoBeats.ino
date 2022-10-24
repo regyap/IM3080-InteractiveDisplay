@@ -128,7 +128,11 @@ void raise(long elapsedTime, long beat[]) {
     queue[pushNum] = randNumber;  //Add the tube number to queue to keep track
     strip.setPin(randNumber);
     strip.fill(strip.Color(255, 255, 255));
-    strip.setBrightness(200);
+    //    strip.setBrightness(200);
+    //    strip.show();
+
+    // --- brightness zero ---
+    strip.setBrightness(0);
     strip.show();
 
     //Update push variable
@@ -163,9 +167,11 @@ void raise(long elapsedTime, long beat[]) {
           popNum++;
         }
       } else {  //else, change brightness of tube in pattern
-        //        strip.setBrightness((double(tubeTime) / duration) * 255);
-        //        Serial.println("brightness :" + String((double(tubeTime) / duration) * 255));
-        //        strip.show();
+        // --- added colour + change to int ---
+        strip.fill(strip.Color(0, 0, 255));
+        strip.setBrightness(int((double(tubeTime) / duration) * 255));
+        Serial.println("brightness :" + String((double(tubeTime) / duration) * 255));
+        strip.show();
       }
     }
   } else if (pushNum < popNum) { //Handle Circular Buffer situation
@@ -184,8 +190,10 @@ void raise(long elapsedTime, long beat[]) {
           popNum++;
         }
       } else {  //else, change brightness of tube in pattern
-        //        strip.setBrightness((double(tubeTime) / duration) * 255);
-        //        strip.show();
+        // --- added colour + change to int ---
+        strip.fill(strip.Color(0, 0, 255));
+        strip.setBrightness(int((double(tubeTime) / duration) * 255));
+        strip.show();
       }
     }
 
@@ -204,8 +212,10 @@ void raise(long elapsedTime, long beat[]) {
           popNum++;
         }
       } else {  //else, change brightness of tube in pattern
-        //        strip.setBrightness((double(tubeTime) / duration) * 255);
-        //        strip.show();
+        // --- added colour + change to int ---
+        strip.fill(strip.Color(0, 0, 255));
+        strip.setBrightness(int((double(tubeTime) / duration) * 255));
+        strip.show();
       }
     }
   }
