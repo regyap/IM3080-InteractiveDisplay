@@ -4,8 +4,8 @@
 #endif
 
 //LED pins [FILL IN THE PIN NO!!]
-#define LED_PIN1 
-#define LED_PIN2
+#define LED_PIN1
+#define LED_PIN2 
 #define LED_PIN3
 #define LED_PIN4
 #define LED_PIN5
@@ -46,8 +46,6 @@
 #define echoPin4 
 #define echoPin5 
 #define echoPin6 
-int trigPin = 1;
-int echoPin = 2;
 
 Adafruit_NeoPixel strip(LED_COUNT, LED_PIN1, NEO_GRB + NEO_KHZ800);
 
