@@ -8,6 +8,7 @@
   flex-direction: row;
   justify-content: space-around;
   margin:0px 10px;
+
   /* padding-left: 13%;
   padding-right: 13%; */
 }
@@ -55,8 +56,8 @@
     /* outer white */ -10px 0 80px #f0f,
     /* outer left magenta */ 10px 0 80px #0ff; /* outer right cyan */
 
-  padding-left: 100px;
-  padding-right: 100px;
+  padding-left: 115px;
+  padding-right: 120px;
 }
 
 .fButton:hover {
@@ -130,5 +131,130 @@
   100% {
     -webkit-transform: translateY(0px);
     transform: translateY(0px);
+  }
+}
+
+@media (min-width: 561px) and (max-width: 888px){
+  html,body{
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+  .card .shiftTop{
+    margin:0px;
+    padding-bottom:100px;
+    /* margin:2% 4%; */
+    
+    padding:0px;
+    padding:2% 4%;
+    
+    text-align:center;
+
+    width: 40%;
+    font-size:13px;
+
+
+  }
+  .fButton {
+  
+    margin:2px 4%;
+    font-size: 14px;
+    border-radius: 5px;
+    
+    line-height: 1.5715;
+    position: relative;
+    display: inline-block;
+    font-weight: 400;
+    white-space: nowrap;
+    text-align: center;
+    background-image: none;
+    background-color: transparent;
+
+    border: 1px solid grey;
+    box-shadow: 0 2px 0 rgb(0 0 0 / 2%);
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+  
+    width: 220px;
+    height: 220px;
+    border-radius: 50%;
+    box-shadow: inset 0 0 50px #fff, /* inner white */ inset 20px 0 80px #f0f,
+      /* inner left magenta short */ inset -20px 0 80px #0ff,
+      /* inner right cyan short */ inset 20px 0 300px #f0f,
+      /* inner left magenta broad */ inset -20px 0 300px #0ff,
+      /* inner right cyan broad */ 0 0 50px #fff,
+      /* outer white */ -10px 0 80px #f0f,
+      /* outer left magenta */ 10px 0 80px #0ff; /* outer right cyan */
+  
+    padding-left: 90px;
+    padding-right: 100px;
+  }
+}
+@media (min-width: 50px) and (max-width: 560px){
+  html,body{
+    overflow-x: hidden;
+    overflow-y: auto;
+    height:100%;
+
+  }
+  .forminput {
+    /* background-color: black; */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    margin:0px 10px;
+  }
+  .card{
+    text-align:center;
+  }
+  .card .shiftTop{
+    margin:0px;
+    padding-bottom:100px;
+    /* margin:2% 4%; */
+    
+    padding:0px;
+    padding:2% 4%;
+    
+    text-align:center;
+
+    position:relative;
+    left:200px;
+
+    width: 400px;
+    height:60px;
+    font-size:10px;
+  }
+  .fButton {
+  
+    margin:2px 4%;
+    font-size: 14px;
+    border-radius: 1px;
+    
+    line-height: 1.5715;
+    position: relative;
+    display: inline-block;
+    font-weight: 400;
+    white-space: nowrap;
+    text-align: center;
+    background-image: none;
+    background-color: transparent;
+
+    border: 1px solid grey;
+    box-shadow: 0 2px 0 rgb(0 0 0 / 2%);
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+  
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    box-shadow: inset 0 0 50px #fff, /* inner white */ inset 20px 0 80px #f0f,
+      /* inner left magenta short */ inset -20px 0 80px #0ff,
+      /* inner right cyan short */ inset 20px 0 300px #f0f,
+      /* inner left magenta broad */ inset -20px 0 300px #0ff,
+      /* inner right cyan broad */ 0 0 50px #fff,
+      /* outer white */ -10px 0 80px #f0f,
+      /* outer left magenta */ 10px 0 80px #0ff; /* outer right cyan */
+  
+    padding-left: 55px;
+    padding-right: 60px;
   }
 }

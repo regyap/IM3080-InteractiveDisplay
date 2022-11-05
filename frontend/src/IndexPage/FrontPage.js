@@ -36,8 +36,8 @@ function FrontPage(props) {
             "inset 0 0 50px #fff,inset 20px 0 80px #f0f,inset -20px 0 80px #0ff,inset 20px 0 300px #f0f,inset -20px 0 300px #0ff",
         }}
       >
-        <Card.Body>
-          <Card.Title>{"Time Left " + timeLeft}</Card.Title>
+        <Card.Body className = "shiftTop">
+          <Card.Title >{"Time Left " + timeLeft}</Card.Title>
         </Card.Body>
       </Card>
 
