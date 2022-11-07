@@ -48,8 +48,8 @@ long test[] = {1000, 2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000};
 int LED_COUNT = 60;
 unsigned long lastTime = 0;
 int brightness = 200;
-int ledPinMin = 2;
-int ledPinMax = 8;
+int ledPinMin = 22;
+int ledPinMax = 41;
 int duration = 1000;
 
 Adafruit_NeoPixel strip(LED_COUNT, ledPinMin, NEO_GRB + NEO_KHZ800);
