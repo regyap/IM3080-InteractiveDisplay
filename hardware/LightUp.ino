@@ -243,7 +243,7 @@ void DirectionRipple1(long elapsedTime) {
     TurnOff(LED_PIN13);
     TurnOff(LED_PIN14);
     TurnOff(LED_PIN15);
-    
+
     TurnOn(LED_PIN16);
     TurnOn(LED_PIN17);
     TurnOn(LED_PIN18);
@@ -254,7 +254,7 @@ void DirectionRipple1(long elapsedTime) {
     TurnOff(LED_PIN17);
     TurnOff(LED_PIN18);
     TurnOff(LED_PIN19);
-    
+
     TurnOn(LED_PIN20);
     TurnOn(LED_PIN21);
     TurnOn(LED_PIN22);
@@ -267,12 +267,12 @@ void DirectionRipple1(long elapsedTime) {
     TurnOff(LED_PIN22);
     TurnOff(LED_PIN23);
     TurnOff(LED_PIN24);
-    
+
     TurnOn(LED_PIN25);
   };
   if (ledTime >= 6000) {
     TurnOff(LED_PIN25);
-    
+
     ledTime -= 6000;
   }
 }
@@ -284,12 +284,19 @@ void DirectionRipple2(long elapsedTime) {
     TurnOn(LED_PIN2);
   };
   if (ledTime >= 1000 && ledTime < 2000) {
+    TurnOff(LED_PIN2);
+
     TurnOn(LED_PIN1);
     TurnOn(LED_PIN3);
     TurnOn(LED_PIN7);
     TurnOn(LED_PIN11);
   };
   if (ledTime >= 2000 && ledTime < 3000) {
+    TurnOff(LED_PIN1);
+    TurnOff(LED_PIN3);
+    TurnOff(LED_PIN7);
+    TurnOff(LED_PIN11);
+
     TurnOn(LED_PIN4);
     TurnOn(LED_PIN8);
     TurnOn(LED_PIN12);
@@ -297,6 +304,12 @@ void DirectionRipple2(long elapsedTime) {
     TurnOn(LED_PIN20);
   };
   if (ledTime >= 3000 && ledTime < 4000) {
+    TurnOff(LED_PIN4);
+    TurnOff(LED_PIN8);
+    TurnOff(LED_PIN12);
+    TurnOff(LED_PIN16);
+    TurnOff(LED_PIN20);
+    
     TurnOn(LED_PIN5);
     TurnOn(LED_PIN9);
     TurnOn(LED_PIN13);
@@ -304,6 +317,12 @@ void DirectionRipple2(long elapsedTime) {
     TurnOn(LED_PIN21);
   };
   if (ledTime >= 4000 && ledTime < 5000) {
+    TurnOff(LED_PIN5);
+    TurnOff(LED_PIN9);
+    TurnOff(LED_PIN13);
+    TurnOff(LED_PIN17);
+    TurnOff(LED_PIN21);
+    
     TurnOn(LED_PIN6);
     TurnOn(LED_PIN10);
     TurnOn(LED_PIN14);
@@ -311,15 +330,28 @@ void DirectionRipple2(long elapsedTime) {
     TurnOn(LED_PIN22);
   };
   if (ledTime >= 5000 && ledTime < 6000) {
+    TurnOff(LED_PIN6);
+    TurnOff(LED_PIN10);
+    TurnOff(LED_PIN14);
+    TurnOff(LED_PIN18);
+    TurnOff(LED_PIN22);
+    
     TurnOn(LED_PIN15);
     TurnOn(LED_PIN19);
     TurnOn(LED_PIN23);
     TurnOn(LED_PIN25);
   };
   if (ledTime >= 5000 && ledTime < 6000) {
+    TurnOff(LED_PIN15);
+    TurnOff(LED_PIN19);
+    TurnOff(LED_PIN23);
+    TurnOff(LED_PIN25);
+    
     TurnOn(LED_PIN24);
   };
   if (ledTime >= 6000) {
+    TurnOff(LED_PIN24);
+    
     ledTime -= 6000;
   }
 }
@@ -332,12 +364,19 @@ void DirectionRipple3(long elapsedTime) {
     TurnOn(LED_PIN6);
   };
   if (ledTime >= 1000 && ledTime < 2000) {
+    TurnOff(LED_PIN6);
+    
     TurnOn(LED_PIN1);
     TurnOn(LED_PIN5);
     TurnOn(LED_PIN10);
     TurnOn(LED_PIN15);
   };
   if (ledTime >= 2000 && ledTime < 3000) {
+    TurnOff(LED_PIN1);
+    TurnOff(LED_PIN5);
+    TurnOff(LED_PIN10);
+    TurnOff(LED_PIN15);
+    
     TurnOn(LED_PIN4);
     TurnOn(LED_PIN9);
     TurnOn(LED_PIN14);
@@ -345,6 +384,12 @@ void DirectionRipple3(long elapsedTime) {
     TurnOn(LED_PIN24);
   };
   if (ledTime >= 3000 && ledTime < 4000) {
+    TurnOff(LED_PIN4);
+    TurnOff(LED_PIN9);
+    TurnOff(LED_PIN14);
+    TurnOff(LED_PIN19);
+    TurnOff(LED_PIN24);
+    
     TurnOn(LED_PIN3);
     TurnOn(LED_PIN8);
     TurnOn(LED_PIN13);
@@ -352,6 +397,12 @@ void DirectionRipple3(long elapsedTime) {
     TurnOn(LED_PIN23);
   };
   if (ledTime >= 4000 && ledTime < 5000) {
+    TurnOff(LED_PIN3);
+    TurnOff(LED_PIN8);
+    TurnOff(LED_PIN13);
+    TurnOff(LED_PIN18);
+    TurnOff(LED_PIN23);
+    
     TurnOn(LED_PIN2);
     TurnOn(LED_PIN7);
     TurnOn(LED_PIN12);
@@ -359,15 +410,28 @@ void DirectionRipple3(long elapsedTime) {
     TurnOn(LED_PIN22);
   };
   if (ledTime >= 5000 && ledTime < 6000) {
+    TurnOff(LED_PIN2);
+    TurnOff(LED_PIN7);
+    TurnOff(LED_PIN12);
+    TurnOff(LED_PIN17);
+    TurnOff(LED_PIN22);
+    
     TurnOn(LED_PIN11);
     TurnOn(LED_PIN16);
     TurnOn(LED_PIN21);
     TurnOn(LED_PIN25);
   };
   if (ledTime >= 5000 && ledTime < 6000) {
+    TurnOff(LED_PIN11);
+    TurnOff(LED_PIN16);
+    TurnOff(LED_PIN21);
+    TurnOff(LED_PIN25);
+    
     TurnOn(LED_PIN20);
   };
   if (ledTime >= 6000) {
+    TurnOff(LED_PIN20);
+    
     ledTime -= 6000;
   }
 }
@@ -380,12 +444,19 @@ void DirectionRipple4(long elapsedTime) {
     TurnOn(LED_PIN20);
   };
   if (ledTime >= 1000 && ledTime < 2000) {
+    TurnOff(LED_PIN20);
+    
     TurnOn(LED_PIN11);
     TurnOn(LED_PIN16);
     TurnOn(LED_PIN21);
     TurnOn(LED_PIN25);
   };
   if (ledTime >= 2000 && ledTime < 3000) {
+    TurnOff(LED_PIN11);
+    TurnOff(LED_PIN16);
+    TurnOff(LED_PIN21);
+    TurnOff(LED_PIN25);
+    
     TurnOn(LED_PIN2);
     TurnOn(LED_PIN7);
     TurnOn(LED_PIN12);
@@ -393,6 +464,12 @@ void DirectionRipple4(long elapsedTime) {
     TurnOn(LED_PIN22);
   };
   if (ledTime >= 3000 && ledTime < 4000) {
+    TurnOff(LED_PIN2);
+    TurnOff(LED_PIN7);
+    TurnOff(LED_PIN12);
+    TurnOff(LED_PIN17);
+    TurnOff(LED_PIN22);
+    
     TurnOn(LED_PIN3);
     TurnOn(LED_PIN8);
     TurnOn(LED_PIN13);
@@ -400,6 +477,12 @@ void DirectionRipple4(long elapsedTime) {
     TurnOn(LED_PIN23);
   };
   if (ledTime >= 4000 && ledTime < 5000) {
+    TurnOff(LED_PIN3);
+    TurnOff(LED_PIN8);
+    TurnOff(LED_PIN13);
+    TurnOff(LED_PIN18);
+    TurnOff(LED_PIN23);
+    
     TurnOn(LED_PIN4);
     TurnOn(LED_PIN9);
     TurnOn(LED_PIN14);
@@ -407,15 +490,28 @@ void DirectionRipple4(long elapsedTime) {
     TurnOn(LED_PIN24);
   };
   if (ledTime >= 5000 && ledTime < 6000) {
+    TurnOff(LED_PIN4);
+    TurnOff(LED_PIN9);
+    TurnOff(LED_PIN14);
+    TurnOff(LED_PIN19);
+    TurnOff(LED_PIN24);
+    
     TurnOn(LED_PIN1);
     TurnOn(LED_PIN5);
     TurnOn(LED_PIN10);
     TurnOn(LED_PIN15);
   };
   if (ledTime >= 5000 && ledTime < 6000) {
+    TurnOff(LED_PIN1);
+    TurnOff(LED_PIN5);
+    TurnOff(LED_PIN10);
+    TurnOff(LED_PIN15);
+    
     TurnOn(LED_PIN6);
   };
   if (ledTime >= 6000) {
+    TurnOff(LED_PIN6);
+    
     ledTime -= 6000;
   }
 }
@@ -427,12 +523,19 @@ void DirectionRipple5(long elapsedTime) {
     TurnOn(LED_PIN24);
   };
   if (ledTime >= 1000 && ledTime < 2000) {
+    TurnOff(LED_PIN24);
+    
     TurnOn(LED_PIN15);
     TurnOn(LED_PIN19);
     TurnOn(LED_PIN23);
     TurnOn(LED_PIN25);
   };
   if (ledTime >= 2000 && ledTime < 3000) {
+    TurnOff(LED_PIN15);
+    TurnOff(LED_PIN19);
+    TurnOff(LED_PIN23);
+    TurnOff(LED_PIN25);
+    
     TurnOn(LED_PIN6);
     TurnOn(LED_PIN10);
     TurnOn(LED_PIN14);
@@ -440,6 +543,12 @@ void DirectionRipple5(long elapsedTime) {
     TurnOn(LED_PIN22);
   };
   if (ledTime >= 3000 && ledTime < 4000) {
+    TurnOff(LED_PIN6);
+    TurnOff(LED_PIN10);
+    TurnOff(LED_PIN14);
+    TurnOff(LED_PIN18);
+    TurnOff(LED_PIN22);
+    
     TurnOn(LED_PIN5);
     TurnOn(LED_PIN9);
     TurnOn(LED_PIN13);
@@ -447,6 +556,12 @@ void DirectionRipple5(long elapsedTime) {
     TurnOn(LED_PIN21);
   };
   if (ledTime >= 4000 && ledTime < 5000) {
+    TurnOff(LED_PIN5);
+    TurnOff(LED_PIN9);
+    TurnOff(LED_PIN13);
+    TurnOff(LED_PIN17);
+    TurnOff(LED_PIN21);
+    
     TurnOn(LED_PIN4);
     TurnOn(LED_PIN8);
     TurnOn(LED_PIN12);
@@ -454,15 +569,28 @@ void DirectionRipple5(long elapsedTime) {
     TurnOn(LED_PIN20);
   };
   if (ledTime >= 5000 && ledTime < 6000) {
+    TurnOff(LED_PIN4);
+    TurnOff(LED_PIN8);
+    TurnOff(LED_PIN12);
+    TurnOff(LED_PIN16);
+    TurnOff(LED_PIN20);
+    
     TurnOn(LED_PIN1);
     TurnOn(LED_PIN3);
     TurnOn(LED_PIN7);
     TurnOn(LED_PIN11);
   };
   if (ledTime >= 5000 && ledTime < 6000) {
+    TurnOff(LED_PIN1);
+    TurnOff(LED_PIN3);
+    TurnOff(LED_PIN7);
+    TurnOff(LED_PIN11);
+    
     TurnOn(LED_PIN2);
   };
   if (ledTime >= 6000) {
+    TurnOff(LED_PIN2);
+    
     ledTime -= 6000;
   }
 }
@@ -475,6 +603,8 @@ void DirectionRipple6(long elapsedTime) {
     TurnOn(LED_PIN25);
   };
   if (ledTime >= 1000 && ledTime < 2000) {
+    TurnOff(LED_PIN25);
+    
     TurnOn(LED_PIN20);
     TurnOn(LED_PIN21);
     TurnOn(LED_PIN22);
@@ -482,12 +612,23 @@ void DirectionRipple6(long elapsedTime) {
     TurnOn(LED_PIN24);
   };
   if (ledTime >= 2000 && ledTime < 3000) {
+    TurnOff(LED_PIN20);
+    TurnOff(LED_PIN21);
+    TurnOff(LED_PIN22);
+    TurnOff(LED_PIN23);
+    TurnOff(LED_PIN24);
+    
     TurnOn(LED_PIN16);
     TurnOn(LED_PIN17);
     TurnOn(LED_PIN18);
     TurnOn(LED_PIN19);
   };
   if (ledTime >= 3000 && ledTime < 4000) {
+    TurnOff(LED_PIN16);
+    TurnOff(LED_PIN17);
+    TurnOff(LED_PIN18);
+    TurnOff(LED_PIN19);
+    
     TurnOn(LED_PIN11);
     TurnOn(LED_PIN12);
     TurnOn(LED_PIN13);
@@ -495,12 +636,23 @@ void DirectionRipple6(long elapsedTime) {
     TurnOn(LED_PIN15);
   };
   if (ledTime >= 4000 && ledTime < 5000) {
+    TurnOff(LED_PIN11);
+    TurnOff(LED_PIN12);
+    TurnOff(LED_PIN13);
+    TurnOff(LED_PIN14);
+    TurnOff(LED_PIN15);
+    
     TurnOn(LED_PIN7);
     TurnOn(LED_PIN8);
     TurnOn(LED_PIN9);
     TurnOn(LED_PIN10);
   };
   if (ledTime >= 5000 && ledTime < 6000) {
+    TurnOff(LED_PIN7);
+    TurnOff(LED_PIN8);
+    TurnOff(LED_PIN9);
+    TurnOff(LED_PIN10);
+    
     TurnOn(LED_PIN2);
     TurnOn(LED_PIN3);
     TurnOn(LED_PIN4);
@@ -508,9 +660,17 @@ void DirectionRipple6(long elapsedTime) {
     TurnOn(LED_PIN6);
   };
   if (ledTime >= 5000 && ledTime < 6000) {
+    TurnOff(LED_PIN2);
+    TurnOff(LED_PIN3);
+    TurnOff(LED_PIN4);
+    TurnOff(LED_PIN5);
+    TurnOff(LED_PIN6);
+    
     TurnOn(LED_PIN1);
   };
   if (ledTime >= 6000) {
+    TurnOff(LED_PIN1);
+    
     ledTime -= 6000;
   }
 }
