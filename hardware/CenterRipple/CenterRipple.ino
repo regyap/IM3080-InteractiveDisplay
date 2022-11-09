@@ -34,14 +34,11 @@
 #define LED_PIN24 33
 #define LED_PIN25 34
 
-
 #define LED_COUNT 40
-
-#define BUTTON_PIN 8
 
 Adafruit_NeoPixel strip(LED_COUNT, LED_PIN1, NEO_BRG + NEO_KHZ800);
 
-int brightness = 20;
+int brightness = 250;
 int wait = 1000;
 int buttonState = 0;
 
@@ -54,7 +51,6 @@ void setup() {
   strip.setBrightness(brightness);
 
   Serial.begin(9600);
-  pinMode(BUTTON_PIN, INPUT);
 }
 
 void TurnOn(int pin, long elapsedMS) {
@@ -120,7 +116,7 @@ void rainbow(long elapsedTime) {      //wait = 20
   static long RainbowTime = 0;
   RainbowTime += elapsedTime;
 
-  if (RainbowTime >= 100) {
+  if (RainbowTime >= 300) {
     if (i <= strip.numPixels()) {
       i++;
     }
@@ -132,10 +128,10 @@ void rainbow(long elapsedTime) {      //wait = 20
       j = 0;
     }
     strip.fill(Wheel((i + j)));
-    //    Serial.println(String(i + j));
+    Serial.println(String(i + j));
     strip.show();
 
-    RainbowTime -= 100;
+    RainbowTime -= 300;
   }
 }
 
@@ -160,24 +156,14 @@ void loop() {
   long elapsedTime = millis() - lastTime; //get time elapsed
   lastTime += elapsedTime;
 
-    //    strip.setPin(22);
-    //    strip.fill(strip.Color(255,255,0));
-    //    strip.show();
 
-    strip.setPin(2);
+  for (int i = 27; i <= 51; i++) {
+    strip.setPin(i);
+    Serial.println(String(i));
     rainbow(elapsedTime);
-    //    Serial.println("2");
 
-    strip.setPin(3);
-    rainbow(elapsedTime);
-    //    Serial.println("3");
+  }
 
-    strip.setPin(4);
-    rainbow(elapsedTime);
-    //    Serial.println("4");
 
-    strip.setPin(6);
-    rainbow(elapsedTime);
-    //    Serial.println("6");
-  
+
 }

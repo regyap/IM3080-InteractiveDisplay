@@ -117,24 +117,29 @@ void blink(long elapsedTime) {
 }
 
 void raise(long elapsedTime, int pin) {
-//  strip.clear();
-//  strip.show();
+  //  strip.clear();
+  //  strip.show();
   strip.setPin(pin);
   static long ledTime[25];
-  
+
   static long raiseTime = 0;
   static long pixel = 0;
 
-//  if(ledTime[pin] == null){
-//    ledTime[pin] = elapsedTime;
-//  }else{
-    ledTime[pin] += elapsedTime;
-//  }
+  int inpin = pin - 27;
+  if (pin == 22) {
+    inpin = 8;
+  }
 
-  if (ledTime[pin] >= beat[i]) {
-    raiseTime = ledTime[pin] - beat[i];
+  Serial.println("pin :" + String(inpin));
+  Serial.println("raiseTime :" + String(raiseTime));
+
+
+
+  ledTime[inpin] += elapsedTime;
+  if (ledTime[inpin] >= beat[i]) {
+    raiseTime = ledTime[inpin] - beat[i];
     if (raiseTime <= 400) {
-      if (raiseTime%(400/60) <= 10) {
+      if (raiseTime % (400 / 20) <= 5) {
         strip.setPixelColor(pixel, 255, 0, 255);
         pixel++;
       }
@@ -147,7 +152,6 @@ void raise(long elapsedTime, int pin) {
       pixel = 0;
       i += 1;
     }
-
   }
   else {
     strip.clear();
@@ -159,20 +163,42 @@ void loop() {
   // put your main code here, to run repeatedly:
   long elapsedTime = millis() - lastTime;
   lastTime = lastTime + elapsedTime;
+
+  //
+  //  strip.setPin(28);
+  //  blink(elapsedTime);
+  //  strip.setPin(29);
+  //  blink(elapsedTime);
+
+
+
+
+
+
+  //============================
+
+
+
+
+//  for (int i = 22; i <= 51; i++) {
+//    raise(elapsedTime, i);
+//  }
+
+//    raise(elapsedTime, 27);
   
-    raise(elapsedTime,2);
-    raise(elapsedTime,3);
-    raise(elapsedTime,4);
-    raise(elapsedTime,5);
-    raise(elapsedTime,6);
+    raise(elapsedTime, 28);
+    raise(elapsedTime, 29);
+//    raise(elapsedTime, 30);
+//    raise(elapsedTime, 31);
+//    raise(elapsedTime, 32);
+  
+//    raise(elapsedTime, 33);
+//    // 8
+//    raise(elapsedTime, 22);
+//    raise(elapsedTime, 34);
+//    raise(elapsedTime, 35);
+//    
+//    raise(elapsedTime, 36);
 
-//  strip.setPin(6);
-//  strip.fill(strip.Color(255, 0, 0));
-//  strip.show();
-
-
-  //  Serial.println(elapsedTime);
-
-  //  Serial.println(lastTime);
-
+  // 27
 }
