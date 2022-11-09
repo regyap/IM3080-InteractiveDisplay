@@ -179,7 +179,8 @@ void storymode(long elapsedTime) {
   static long storymodeTime = 0;
   storymodeTime += elapsedTime;
 
-  if (storymodeTime < 36000) {
+  if (storymodeTime < 2000) {  // 36000
+    Serial.println("SKY : " + String(storymodeTime));
     //  BLUE SKY (36s)
     // light blue : 0,255,255
     // dark blue : 0,128,255
@@ -197,8 +198,10 @@ void storymode(long elapsedTime) {
       }
     }
     setAllTubes(strip.Color(0, skyIndex, 255));
+    //    setAllTubes(strip.Color(255, 0, 0));
 
-  } else if (storymodeTime < 47000) {
+  } else if (storymodeTime < 4000) { //47000
+    Serial.println("LIGHTNING : " + String(storymodeTime));
     // thunder/lightning (11s)
 
     if (storymodeTime > 37000 && storymodeTime < 37300) {            // lightning
@@ -220,21 +223,23 @@ void storymode(long elapsedTime) {
     }
 
   } else if (storymodeTime < 108000) {
-    Serial.println("RAINNNNNN :");
-    
+    Serial.println("RAINNNNNN : " + String(storymodeTime));
+
     // rain (36s)
     static int pixelCount = 1; // x1,x2 : rain ; x3 : not rain
     static int rain[60];
 
+    
 
     // shift down by 1
     for (int i = 60; i >= 0; i--) {
       int temp = rain[i];
       rain[i - 1] = temp;
+      Serial.println("RAIN[] : " + String(rain[i]));
     }
 
     // add start pixel
-    if (pixelCount % 3 != 3) {
+    if (pixelCount != 3) {
       rain[60] = 1;
     } else {
       rain[60] = 0;
@@ -244,9 +249,17 @@ void storymode(long elapsedTime) {
     for (int i = 60; i >= 0; i--) {
       if (rain[i] == 1) {
         Serial.println("SETT :");
-        setAllTubes_pixel(strip.Color(255, 255, 255), i);
+        setAllTubes_pixel(strip.Color(255, 0, 0), i);
       }
     }
+
+    // increment
+    if (pixelCount == 3) {
+      pixelCount = 1;
+    } else {
+      pixelCount++;
+    }
+
 
   } else if (storymodeTime < 144000) {
     // sunshine
@@ -254,6 +267,7 @@ void storymode(long elapsedTime) {
   } else {
     // rainbow
   }
+  Serial.println("OUT : " + String(storymodeTime));
 
 }
 
@@ -332,8 +346,11 @@ void loop() {
   long elapsedTime = millis() - lastTime;
   lastTime = lastTime + elapsedTime;
 
+//  Serial.println("MAIN LOOP");
   storymode(elapsedTime);
-//    raise(elapsedTime);
+
+
+  //    raise(elapsedTime);
 
   //  strip.setPin(6);
   //  strip.fill(strip.Color(255, 0, 0));
