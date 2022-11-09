@@ -174,16 +174,37 @@ void raise(long elapsedTime) {
 // one cycle : 180s (180000ms)
 // each sub-mode : 36s (36000ms)
 void storymode(long elapsedTime) {
-  static boolean darken = true;
-  static int skyIndex = 128;
-  static long storymodeTime = 0;
+  
+  static unsigned long storymodeTime = 0;
   storymodeTime += elapsedTime;
 
   if (storymodeTime < 2000) {  // 36000
-    Serial.println("SKY : " + String(storymodeTime));
+    sky_storymode(storymodeTime);
+
+  } else if (storymodeTime < 4000) { //47000
+    lightning_storymode(storymodeTime);
+
+  } else if (storymodeTime < 108000) {
+    rain_storymode(storymodeTime);
+
+  } else if (storymodeTime < 144000) {
+    // sunshine
+
+  } else {
+    // rainbow
+  }
+  Serial.println("OUT : " + String(storymodeTime));
+
+}
+
+void sky_storymode(long storymodeTime){
+  Serial.println("SKY : " + String(storymodeTime));
     //  BLUE SKY (36s)
     // light blue : 0,255,255
     // dark blue : 0,128,255
+
+    static boolean darken = true;
+    static int skyIndex = 128;
 
     if (darken)
     {
@@ -198,10 +219,10 @@ void storymode(long elapsedTime) {
       }
     }
     setAllTubes(strip.Color(0, skyIndex, 255));
-    //    setAllTubes(strip.Color(255, 0, 0));
+}
 
-  } else if (storymodeTime < 4000) { //47000
-    Serial.println("LIGHTNING : " + String(storymodeTime));
+void lightning_storymode(long storymodeTime){
+  Serial.println("LIGHTNING : " + String(storymodeTime));
     // thunder/lightning (11s)
 
     if (storymodeTime > 37000 && storymodeTime < 37300) {            // lightning
@@ -221,15 +242,19 @@ void storymode(long elapsedTime) {
     } else {      // no color
       setAllTubes(strip.Color(0, 0, 0));
     }
+}
 
-  } else if (storymodeTime < 108000) {
-    Serial.println("RAINNNNNN : " + String(storymodeTime));
+void rain_storymode(long storymodeTime){
+  Serial.println("RAINNNNNN : " + String(storymodeTime));
 
     // rain (36s)
     static int pixelCount = 1; // x1,x2 : rain ; x3 : not rain
     static int rain[60];
 
-    
+    //Initialse all array value to be zero
+    for (int i = 60; i >= 0; i--) {
+      rain[i] = 0;
+    }
 
     // shift down by 1
     for (int i = 60; i >= 0; i--) {
@@ -259,16 +284,6 @@ void storymode(long elapsedTime) {
     } else {
       pixelCount++;
     }
-
-
-  } else if (storymodeTime < 144000) {
-    // sunshine
-
-  } else {
-    // rainbow
-  }
-  Serial.println("OUT : " + String(storymodeTime));
-
 }
 
 void setAllTubes(uint32_t color) {
