@@ -116,27 +116,42 @@ void blink(long elapsedTime) {
   }
 }
 
-void raise(long elapsedTime, int pin) {
-//  strip.clear();
-//  strip.show();
-  strip.setPin(pin);
-  static long ledTime[25];
-  
+void raise(long elapsedTime) {
+  //  strip.clear();
+  ////  strip.show();
+  //  strip.setPin(pin);
+  //  static long ledTime[25];
+
+  static long ledTime = 0;
   static long raiseTime = 0;
   static long pixel = 0;
 
-//  if(ledTime[pin] == null){
-//    ledTime[pin] = elapsedTime;
-//  }else{
-    ledTime[pin] += elapsedTime;
-//  }
 
-  if (ledTime[pin] >= beat[i]) {
-    raiseTime = ledTime[pin] - beat[i];
-    if (raiseTime <= 400) {
-      if (raiseTime%(400/60) <= 10) {
-        strip.setPixelColor(pixel, 255, 0, 255);
+  ledTime += elapsedTime;
+
+
+  if (ledTime >= beat[i]) {
+    raiseTime = ledTime - beat[i];
+    if (raiseTime <= 600) {
+      //      if (raiseTime%(400/30) <= 30) {
+      //        setAllTubes_pixel(strip.Color(255,0,255),pixel);
+      //        pixel++;
+      //      }
+
+      if (raiseTime < 300) {
+        setAllTubes_pixel(strip.Color(255, 0, 255), pixel);
         pixel++;
+        setAllTubes_pixel(strip.Color(255, 0, 255), pixel);
+        pixel++;
+        setAllTubes_pixel(strip.Color(255, 0, 255), pixel);
+        pixel++;
+        setAllTubes_pixel(strip.Color(255, 0, 255), pixel);
+        pixel++;
+      } else {
+        setAllTubes_pixel(strip.Color(0, 0, 0), pixel);
+        pixel--;
+        setAllTubes_pixel(strip.Color(0, 0, 0), pixel);
+        pixel--;
       }
 
       strip.show();
@@ -159,125 +174,170 @@ void raise(long elapsedTime, int pin) {
 // one cycle : 180s (180000ms)
 // each sub-mode : 36s (36000ms)
 void storymode(long elapsedTime) {
+  static boolean darken = true;
   static int skyIndex = 128;
-  static storymodeTime;
+  static long storymodeTime = 0;
   storymodeTime += elapsedTime;
 
-  strip.setPin(27);
-    //initial color
-
-  if(storymodeTime < 36000){
+  if (storymodeTime < 36000) {
     //  BLUE SKY (36s)
     // light blue : 0,255,255
     // dark blue : 0,128,255
-    
-    if(skyIndex > 128)
+
+    if (darken)
     {
-      skyIndex -= 5;
-    }else{
-      skyIndex += 5;
+      skyIndex -= 6;
+      if (skyIndex <= 128) {
+        darken = false;
+      }
+    } else {                 // lighten
+      skyIndex += 6;
+      if (skyIndex >= 254) {
+        darken = true;
+      }
     }
-    setAllTubes(strip.Color(0,skyIndex,255));
-    
-  }else if(lightshowTime < 47000){
+    setAllTubes(strip.Color(0, skyIndex, 255));
+
+  } else if (storymodeTime < 47000) {
     // thunder/lightning (11s)
 
-    if (lightshowTime > 37000) {            // lightning
-      setAllTubes(strip.Color(255,255,255));
-    } else if (lightshowTime > 37500) {     // dark blue
-      setAllTubes(strip.Color(0,64,255));
-    } else if (lightshowTime > 40000) {     // lightning
-      setAllTubes(strip.Color(255,255,255));
-    } else if (lightshowTime > 40500) {     // dark blue
-      setAllTubes(strip.Color(64,0,255));
-    } else if (lightshowTime > 41000) {     // lightning
-      setAllTubes(strip.Color(255,255,255));
-    } else if (lightshowTime > 41500) {     // dark blue
-      setAllTubes(strip.Color(64,0,255));
-    } else if (lightshowTime > 45000) {     // lightning
-      setAllTubes(strip.Color(255,255,255));
-    }else if (lightshowTime > 46000) {      // no color
-      setAllTubes(strip.Color(0,0,0));
-    } 
-    
-  }else if(lightshowTime < 108000){
-    // rain (36s)
+    if (storymodeTime > 37000 && storymodeTime < 37300) {            // lightning
+      setAllTubes(strip.Color(255, 255, 255));
+    } else if (storymodeTime < 40000) {     // dark blue
+      setAllTubes(strip.Color(0, 64, 255));
+    } else if (storymodeTime < 40300) {     // lightning
+      setAllTubes(strip.Color(255, 255, 255));
+    } else if (storymodeTime < 41000) {     // dark blue
+      setAllTubes(strip.Color(64, 0, 255));
+    } else if (storymodeTime < 41300) {     // lightning
+      setAllTubes(strip.Color(255, 255, 255));
+    } else if (storymodeTime < 41600) {     // dark blue
+      setAllTubes(strip.Color(64, 0, 255));
+    } else if (storymodeTime < 42000) {     // lightning
+      setAllTubes(strip.Color(255, 255, 255));
+    } else {      // no color
+      setAllTubes(strip.Color(0, 0, 0));
+    }
 
+  } else if (storymodeTime < 108000) {
+    Serial.println("RAINNNNNN :");
     
-    
-  }else if(lightshowTime < 144000){
+    // rain (36s)
+    static int pixelCount = 1; // x1,x2 : rain ; x3 : not rain
+    static int rain[60];
+
+
+    // shift down by 1
+    for (int i = 60; i >= 0; i--) {
+      int temp = rain[i];
+      rain[i - 1] = temp;
+    }
+
+    // add start pixel
+    if (pixelCount % 3 != 3) {
+      rain[60] = 1;
+    } else {
+      rain[60] = 0;
+    }
+
+    // set all tubes
+    for (int i = 60; i >= 0; i--) {
+      if (rain[i] == 1) {
+        Serial.println("SETT :");
+        setAllTubes_pixel(strip.Color(255, 255, 255), i);
+      }
+    }
+
+  } else if (storymodeTime < 144000) {
     // sunshine
-    
-  }else{
+
+  } else {
     // rainbow
   }
 
 }
 
-void setAllTubes(strip.Color color){
-  for(int i=27;i<=52;i++){
+void setAllTubes(uint32_t color) {
+  for (int i = 27; i <= 51; i++) {
+    if (i == 34) {
+      strip.setPin(22);
+      strip.fill(color);
+      strip.show();
+      continue;
+    }
     strip.setPin(i);
     strip.fill(color);
     strip.show();
   }
-  
+
 }
 
-void rainbow(long elapsedTime) {      //wait = 20
-  static int i = 0;
-  static int j = 0 ;
-  static long RainbowTime = 0;
-  RainbowTime += elapsedTime;
-
-  if (RainbowTime >= 500) {
-    if (i <= strip.numPixels()) {
-      i++;
+void setAllTubes_pixel(uint32_t color, long pixel) {
+  for (int i = 27; i <= 51; i++) {
+    if (i == 34) {
+      strip.setPin(22);
+      strip.setPixelColor(pixel, color);
+      strip.show();
+      continue;
     }
-    else if (i >= strip.numPixels()) {
-      j++;
-    }
-    if (i + j >= 256) {
-      i = 0;
-      j = 0;
-    }
-    strip.fill(Wheel((i + j)));
-    //    Serial.println(String(i + j));
+    strip.setPin(i);
+    strip.setPixelColor(pixel, color);
     strip.show();
-
-    RainbowTime -= 100;
   }
 }
 
-uint32_t skyWheel(byte WheelPos) {
-  WheelPos = 255 - WheelPos;
-  if (WheelPos < 85) {
-    //    Serial.println("red to blue -" + String(WheelPos * 3));
-    return strip.Color(255 - WheelPos * 3, 0, WheelPos * 3);
-  }
-  if (WheelPos < 170) {
-    WheelPos -= 85;
-    //    Serial.println("blue to green =" + String(WheelPos * 3));
-    return strip.Color(0, WheelPos * 3, 255 - WheelPos * 3);
-  }
-  WheelPos -= 170;
-  //  Serial.println("green to red _" + String(WheelPos * 3));
-  return strip.Color(WheelPos * 3, 255 - WheelPos * 3, 0);
-}
+//void rainbow(long elapsedTime) {      //wait = 20
+//  static int i = 0;
+//  static int j = 0 ;
+//  static long RainbowTime = 0;
+//  RainbowTime += elapsedTime;
+//
+//  if (RainbowTime >= 500) {
+//    if (i <= strip.numPixels()) {
+//      i++;
+//    }
+//    else if (i >= strip.numPixels()) {
+//      j++;
+//    }
+//    if (i + j >= 256) {
+//      i = 0;
+//      j = 0;
+//    }
+//    strip.fill(Wheel((i + j)));
+//    //    Serial.println(String(i + j));
+//    strip.show();
+//
+//    RainbowTime -= 100;
+//  }
+//}
+
+//uint32_t skyWheel(byte WheelPos) {
+//  WheelPos = 255 - WheelPos;
+//  if (WheelPos < 85) {
+//    //    Serial.println("red to blue -" + String(WheelPos * 3));
+//    return strip.Color(255 - WheelPos * 3, 0, WheelPos * 3);
+//  }
+//  if (WheelPos < 170) {
+//    WheelPos -= 85;
+//    //    Serial.println("blue to green =" + String(WheelPos * 3));
+//    return strip.Color(0, WheelPos * 3, 255 - WheelPos * 3);
+//  }
+//  WheelPos -= 170;
+//  //  Serial.println("green to red _" + String(WheelPos * 3));
+//  return strip.Color(WheelPos * 3, 255 - WheelPos * 3, 0);
+//}
 
 void loop() {
   // put your main code here, to run repeatedly:
   long elapsedTime = millis() - lastTime;
   lastTime = lastTime + elapsedTime;
-  
-    raise(elapsedTime,2);
-    raise(elapsedTime,3);
-    raise(elapsedTime,4);
-    raise(elapsedTime,5);
-    raise(elapsedTime,6);
 
-//  strip.setPin(6);
-//  strip.fill(strip.Color(255, 0, 0));
-//  strip.show();
+  storymode(elapsedTime);
+//    raise(elapsedTime);
+
+  //  strip.setPin(6);
+  //  strip.fill(strip.Color(255, 0, 0));
+  //  strip.show();
 
 
   //  Serial.println(elapsedTime);
