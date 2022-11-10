@@ -157,11 +157,11 @@ void loop() {
   lastTime += elapsedTime;
 
 
-  for (int i = 27; i <= 51; i++) {
+  for (int i = 22; i <= 51; i++) {
     strip.setPin(i);
     Serial.println(String(i));
     rainbow(elapsedTime);
-
+    // rainbow file
   }
 
 

@@ -2,17 +2,17 @@
 #ifdef __AVR__
 #include <avr/power.h> // Required for 16 MHz Adafruit Trinket
 #endif
-#define LED_PIN1 2
-#define LED_PIN2 3
+#define LED_PIN1 1
+#define LED_PIN2 39
 #define LED_PIN3 4
 #define LED_PIN4 5
 #define LED_PIN5 6
 #define LED_COUNT 60
 #define BUTTON_PIN 8
 
-Adafruit_NeoPixel strip(LED_COUNT, LED_PIN1, NEO_BRG + NEO_KHZ800);
+Adafruit_NeoPixel strip(LED_COUNT, LED_PIN1, NEO_BRG + NEO_KHZ800), strip3(LED_COUNT, LED_PIN2, NEO_BRG + NEO_KHZ800);
 
-int brightness = 200;
+int brightness = 250;
 int wait = 1000;
 int buttonState = 0;
 
@@ -65,6 +65,9 @@ void setup() {
   strip.begin();
   strip.show();
   strip.setBrightness(brightness);
+  strip3.begin();
+  strip3.show();
+  strip3.setBrightness(brightness);
   pinMode(BUTTON_PIN, INPUT);
   Serial.begin(9600);
 }
@@ -91,9 +94,6 @@ void blink(long elapsedTime) {
       if (blinkTime <= 10) {
         strip.setBrightness(blinkTime * 20);
       }
-      //      else if (blinkTime <= 30) {
-      //        strip.setBrightness(200);
-      //      }
       else {
         strip.setBrightness(200 - (blinkTime * 4));
       }
@@ -108,7 +108,6 @@ void blink(long elapsedTime) {
       blinkTime = 0;
       i += 1;
     }
-
   }
   else {
     strip.clear();
@@ -116,89 +115,106 @@ void blink(long elapsedTime) {
   }
 }
 
-void raise(long elapsedTime, int pin) {
-  //  strip.clear();
-  //  strip.show();
-  strip.setPin(pin);
-  static long ledTime[25];
 
+void setAllTubes_pixel(uint32_t color, long pixel) {
+  for (int i = 27; i <= 51; i++) {
+    if (i == 34) {
+      strip.setPin(22);
+      strip.setPixelColor(pixel, color);
+      strip.show();
+      continue;
+    } else if (i == 39) {
+      strip3.setPin(i);
+      int pi = pixel + 5;
+      strip3.setPixelColor(pi, color);
+      Serial.println(pi);
+      strip3.show();
+      continue;
+    } else {
+      strip.setPin(i);
+      Serial.println("i" + String(pixel));
+      strip.setPixelColor(pixel, color);
+      strip.show();
+    }
+  }
+}
+
+void raise(long elapsedTime) {
+  //  strip.clear();
+  ////  strip.show();
+  //  strip.setPin(pin);
+  //  static long ledTime[25];
+
+  static long ledTime = 0;
   static long raiseTime = 0;
   static long pixel = 0;
 
-  int inpin = pin - 27;
-  if (pin == 22) {
-    inpin = 8;
-  }
 
-  Serial.println("pin :" + String(inpin));
-  Serial.println("raiseTime :" + String(raiseTime));
+  ledTime += elapsedTime;
 
 
+  if (ledTime >= beat[i] - 400) {
+    raiseTime = ledTime - beat[i];
+    if (raiseTime <= 1000) {
+      //      if (raiseTime%(400/30) <= 30) {
+      //        setAllTubes_pixel(strip.Color(255,0,255),pixel);
+      //        pixel++;
+      //      }
 
-  ledTime[inpin] += elapsedTime;
-  if (ledTime[inpin] >= beat[i]) {
-    raiseTime = ledTime[inpin] - beat[i];
-    if (raiseTime <= 400) {
-      if (raiseTime % (400 / 20) <= 5) {
-        strip.setPixelColor(pixel, 255, 0, 255);
+      if (raiseTime < 800) {
+        setAllTubes_pixel(strip.Color(255, 0, 255), pixel);
         pixel++;
+        setAllTubes_pixel(strip.Color(255, 0, 255), pixel);
+        pixel++;
+        setAllTubes_pixel(strip.Color(255, 0, 255), pixel);
+        pixel++;
+        setAllTubes_pixel(strip.Color(255, 0, 255), pixel);
+        pixel++;
+        setAllTubes_pixel(strip.Color(255, 0, 255), pixel);
+        pixel++;
+        Serial.println("===============");
+      }
+      else {
+        setAllTubes_pixel(strip.Color(0, 0, 0), pixel);
+        pixel--;
+        setAllTubes_pixel(strip.Color(0, 0, 0), pixel);
+        pixel--;
+
       }
 
       strip.show();
-      Serial.println("raiseTime :" + String(raiseTime));
+      strip3.show();
+      //Serial.println("raiseTime :" + String(raiseTime));
     } else {
       strip.clear();
       strip.show();
+      strip3.clear();
+      strip3.show();
       pixel = 0;
       i += 1;
     }
+
   }
   else {
     strip.clear();
     strip.show();
+    strip3.clear();
+    strip3.show();
   }
 }
+
 
 void loop() {
   // put your main code here, to run repeatedly:
   long elapsedTime = millis() - lastTime;
   lastTime = lastTime + elapsedTime;
 
-  //
-  //  strip.setPin(28);
-  //  blink(elapsedTime);
-  //  strip.setPin(29);
-  //  blink(elapsedTime);
+
+  raise(elapsedTime);
 
 
-
-
-
-
-  //============================
-
-
-
-
-//  for (int i = 22; i <= 51; i++) {
-//    raise(elapsedTime, i);
-//  }
-
-//    raise(elapsedTime, 27);
-  
-    raise(elapsedTime, 28);
-    raise(elapsedTime, 29);
-//    raise(elapsedTime, 30);
-//    raise(elapsedTime, 31);
-//    raise(elapsedTime, 32);
-  
-//    raise(elapsedTime, 33);
-//    // 8
-//    raise(elapsedTime, 22);
-//    raise(elapsedTime, 34);
-//    raise(elapsedTime, 35);
-//    
-//    raise(elapsedTime, 36);
+  //    // 8
+  //    raise(elapsedTime, 22);
 
   // 27
 }
