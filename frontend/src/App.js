@@ -7,6 +7,10 @@ import socketOBJ from "./Socket/SocketIO.js";
 import JoinQueue from "./QueueSystem/JoinQueue";
 import Queue from "./QueueSystem/Queue";
 import RGB from "./IndexPage/RGB";
+
+import Interactive from "./Interactive/Interactive.js"
+
+
 import "bootstrap/dist/css/bootstrap.min.css";
 
 function App() {
@@ -50,6 +54,10 @@ function App() {
           <></>
         )}
         {inSession ? <Route path="/control/rgb" element={<RGB />} /> : <></>}
+
+        {inSession ? <Route path="/control/interactive" element={<Interactive />} /> : <></>}
+     
+        
       </Routes>
     </body>
   );

@@ -7,6 +7,8 @@ import "./FrontPage.css";
 function FrontPage(props) {
   const navigate = useNavigate();
   const [timeLeft, setTimeLeft] = useState("");
+  const [inUse, setInUse] = useState(true);
+  // use timeleft countdown 3min use state, dont select.
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -18,14 +20,17 @@ function FrontPage(props) {
         );
         setTimeLeft(minutesLeft + "m " + secondsLeft + "s");
       }
+    
     }, 1000);
     return () => clearInterval(interval);
   }, []);
+  // function checkInUse
 
   function emitReq(button) {
     const data = { mode: button };
     socketOBJ.emit("buttonPressed", data);
   }
+   
 
   return (
     <>
@@ -43,26 +48,35 @@ function FrontPage(props) {
 
       <div className="forminput">
         <button
-          value="Default"
+          value="Story Mode"
           className="fButton"
-          onClick={() => emitReq("default")}
+          onClick={() => emitReq("/control")}
+          // style={ emitReq ?  'border: 1px solid black': 'border: 1px solid grey' } 
+
         >
-          Default
+          Story<br></br> Mode
         </button>
       
-        <button value="Theme" class="fButton" onClick={() => emitReq("theme")}>
-          Theme
+        <button 
+        value="Interactive" 
+        class="fButton" 
+        onClick={() => navigate("/control/interactive")}>
+          Interactive
         </button>
       </div>
       <div className="forminput">
         <button
-          value="Custom"
+          value="Beats"
           className="fButton"
           onClick={() => navigate("/control/rgb")}
         >
-          Custom
+          Beats
         </button>
+      
       </div>
+
+      
+    
     </>
   );
 }
