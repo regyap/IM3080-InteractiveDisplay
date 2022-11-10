@@ -40,17 +40,18 @@
 #define trigPin4 10
 #define trigPin5 14
 #define trigPin6 12
-#define echoPin1 6
+#define echoPin1 4
 #define echoPin2 7
 #define echoPin3 2
 #define echoPin4 9
 #define echoPin5 13
 #define echoPin6 11
 
-Adafruit_NeoPixel strip(LED_COUNT, LED_PIN1, NEO_GRB + NEO_KHZ800);
+Adafruit_NeoPixel strip(LED_COUNT, LED_PIN1, NEO_BRG + NEO_KHZ800);
 
 int brightness = 250;
-int wait = 1000;
+uint32_t color = strip.Color(0, 0, 255);
+int timeInterval = 300;
 
 //for sensors
 int maxDistance = 30;
@@ -114,7 +115,7 @@ bool SensorIsTriggered(int trigPin, int echoPin) {
 
 void TurnOn(int pin) {
   strip.setPin(pin);
-  strip.fill(strip.Color(0, 0, 127));
+  strip.fill(color);
   strip.show();
 
 }
@@ -130,10 +131,14 @@ void CenterRipple(long elapsedTime) {
   static long ledTime = 0;
   ledTime += elapsedTime;
 
-  if (ledTime < 2000) {
+  if (ledTime < timeInterval) {
+    brightness = 255; //Brightness decreases for each ripple wave
+    color = strip.Color(0, 0, 255); //Color changes for each ripple wave
     TurnOn(LED_PIN13);
   };
-  if (ledTime >= 2000 && ledTime < 4000) {
+  if (ledTime >= timeInterval && ledTime < timeInterval * 2) {
+    brightness = 235;
+    color = strip.Color(0, 50, 235);
     TurnOff(LED_PIN13);
 
     TurnOn(LED_PIN8);
@@ -143,7 +148,9 @@ void CenterRipple(long elapsedTime) {
     TurnOn(LED_PIN17);
     TurnOn(LED_PIN18);
   };
-  if (ledTime >= 4000 && ledTime < 6000) {
+  if (ledTime >= timeInterval * 2 && ledTime < timeInterval * 3) {
+    brightness = 215;
+    color = strip.Color(0, 100, 215);
     TurnOff(LED_PIN8);
     TurnOff(LED_PIN9);
     TurnOff(LED_PIN12);
@@ -164,7 +171,9 @@ void CenterRipple(long elapsedTime) {
     TurnOn(LED_PIN22);
     TurnOn(LED_PIN23);
   };
-  if (ledTime >= 6000 && ledTime < 8000) {
+  if (ledTime >= timeInterval * 3 && ledTime < timeInterval * 4) {
+    brightness = 195;
+    color = strip.Color(0, 150, 195);
     TurnOff(LED_PIN3);
     TurnOff(LED_PIN4);
     TurnOff(LED_PIN5);
@@ -185,7 +194,7 @@ void CenterRipple(long elapsedTime) {
     TurnOn(LED_PIN24);
     TurnOn(LED_PIN25);
   };
-  if (ledTime >= 8000) {
+  if (ledTime >= timeInterval * 4) {
     TurnOff(LED_PIN1);
     TurnOff(LED_PIN2);
     TurnOff(LED_PIN6);
@@ -193,7 +202,7 @@ void CenterRipple(long elapsedTime) {
     TurnOff(LED_PIN24);
     TurnOff(LED_PIN25);
 
-    ledTime -= 8000;
+    ledTime -= timeInterval * 4;
   }
 }
 
@@ -201,10 +210,14 @@ void DirectionRipple1(long elapsedTime) {
   static long ledTime = 0;
   ledTime += elapsedTime;
 
-  if (ledTime <= 1000) {
+  if (ledTime <= timeInterval) {
+    brightness = 255;
+    color = strip.Color(0, 0, 255); //Color changes for each ripple wave
     TurnOn(LED_PIN1);
   };
-  if (ledTime >= 1000 && ledTime < 2000) {
+  if (ledTime >= timeInterval && ledTime < timeInterval * 2) {
+    brightness = 240;
+    color = strip.Color(0, 40, 235);
     TurnOff(LED_PIN1);
 
     TurnOn(LED_PIN2);
@@ -213,7 +226,9 @@ void DirectionRipple1(long elapsedTime) {
     TurnOn(LED_PIN5);
     TurnOn(LED_PIN6);
   };
-  if (ledTime >= 2000 && ledTime < 3000) {
+  if (ledTime >= timeInterval * 2 && ledTime < timeInterval * 3) {
+    brightness = 225;
+    color = strip.Color(0, 80, 215);
     TurnOff(LED_PIN2);
     TurnOff(LED_PIN3);
     TurnOff(LED_PIN4);
@@ -225,7 +240,9 @@ void DirectionRipple1(long elapsedTime) {
     TurnOn(LED_PIN9);
     TurnOn(LED_PIN10);
   };
-  if (ledTime >= 3000 && ledTime < 4000) {
+  if (ledTime >= timeInterval * 3 && ledTime < timeInterval * 4) {
+    brightness = 210;
+    color = strip.Color(0, 120, 195);
     TurnOff(LED_PIN7);
     TurnOff(LED_PIN8);
     TurnOff(LED_PIN9);
@@ -237,7 +254,9 @@ void DirectionRipple1(long elapsedTime) {
     TurnOn(LED_PIN14);
     TurnOn(LED_PIN15);
   };
-  if (ledTime >= 4000 && ledTime < 5000) {
+  if (ledTime >= timeInterval * 4 && ledTime < timeInterval * 5) {
+    brightness = 195;
+    color = strip.Color(0, 160, 175);
     TurnOff(LED_PIN11);
     TurnOff(LED_PIN12);
     TurnOff(LED_PIN13);
@@ -249,7 +268,9 @@ void DirectionRipple1(long elapsedTime) {
     TurnOn(LED_PIN18);
     TurnOn(LED_PIN19);
   };
-  if (ledTime >= 5000 && ledTime < 6000) {
+  if (ledTime >= timeInterval * 5 && ledTime < timeInterval * 6) {
+    brightness = 180;
+    color = strip.Color(0, 200, 155);
     TurnOff(LED_PIN16);
     TurnOff(LED_PIN17);
     TurnOff(LED_PIN18);
@@ -261,7 +282,9 @@ void DirectionRipple1(long elapsedTime) {
     TurnOn(LED_PIN23);
     TurnOn(LED_PIN24);
   };
-  if (ledTime >= 5000 && ledTime < 6000) {
+  if (ledTime >= timeInterval * 6 && ledTime < timeInterval * 7) {
+    brightness = 165;
+    color = strip.Color(0, 240, 135);
     TurnOff(LED_PIN20);
     TurnOff(LED_PIN21);
     TurnOff(LED_PIN22);
@@ -270,20 +293,24 @@ void DirectionRipple1(long elapsedTime) {
 
     TurnOn(LED_PIN25);
   };
-  if (ledTime >= 6000) {
+  if (ledTime >= timeInterval * 7) {
     TurnOff(LED_PIN25);
 
-    ledTime -= 6000;
+    ledTime -= timeInterval * 7;
   }
 }
 
 void DirectionRipple2(long elapsedTime) {
   static long ledTime = 0;
   ledTime += elapsedTime;
-  if (ledTime <= 1000) {
+  if (ledTime <= timeInterval) {
+    brightness = 255;
+    color = strip.Color(0, 0, 255);
     TurnOn(LED_PIN2);
   };
-  if (ledTime >= 1000 && ledTime < 2000) {
+  if (ledTime >= timeInterval && ledTime < timeInterval * 2) {
+    brightness = 240;
+    color = strip.Color(0, 40, 235);
     TurnOff(LED_PIN2);
 
     TurnOn(LED_PIN1);
@@ -291,7 +318,9 @@ void DirectionRipple2(long elapsedTime) {
     TurnOn(LED_PIN7);
     TurnOn(LED_PIN11);
   };
-  if (ledTime >= 2000 && ledTime < 3000) {
+  if (ledTime >= timeInterval * 2 && ledTime < timeInterval * 3) {
+    brightness = 225;
+    color = strip.Color(0, 80, 215);
     TurnOff(LED_PIN1);
     TurnOff(LED_PIN3);
     TurnOff(LED_PIN7);
@@ -303,56 +332,64 @@ void DirectionRipple2(long elapsedTime) {
     TurnOn(LED_PIN16);
     TurnOn(LED_PIN20);
   };
-  if (ledTime >= 3000 && ledTime < 4000) {
+  if (ledTime >= timeInterval * 3 && ledTime < timeInterval * 4) {
+    brightness = 210;
+    color = strip.Color(0, 120, 195);
     TurnOff(LED_PIN4);
     TurnOff(LED_PIN8);
     TurnOff(LED_PIN12);
     TurnOff(LED_PIN16);
     TurnOff(LED_PIN20);
-    
+
     TurnOn(LED_PIN5);
     TurnOn(LED_PIN9);
     TurnOn(LED_PIN13);
     TurnOn(LED_PIN17);
     TurnOn(LED_PIN21);
   };
-  if (ledTime >= 4000 && ledTime < 5000) {
+  if (ledTime >= timeInterval * 4 && ledTime < timeInterval * 5) {
+    brightness = 195;
+    color = strip.Color(0, 160, 175);
     TurnOff(LED_PIN5);
     TurnOff(LED_PIN9);
     TurnOff(LED_PIN13);
     TurnOff(LED_PIN17);
     TurnOff(LED_PIN21);
-    
+
     TurnOn(LED_PIN6);
     TurnOn(LED_PIN10);
     TurnOn(LED_PIN14);
     TurnOn(LED_PIN18);
     TurnOn(LED_PIN22);
   };
-  if (ledTime >= 5000 && ledTime < 6000) {
+  if (ledTime >= timeInterval * 5 && ledTime < timeInterval * 6) {
+    brightness = 180;
+    color = strip.Color(0, 200, 155);
     TurnOff(LED_PIN6);
     TurnOff(LED_PIN10);
     TurnOff(LED_PIN14);
     TurnOff(LED_PIN18);
     TurnOff(LED_PIN22);
-    
+
     TurnOn(LED_PIN15);
     TurnOn(LED_PIN19);
     TurnOn(LED_PIN23);
     TurnOn(LED_PIN25);
   };
-  if (ledTime >= 5000 && ledTime < 6000) {
+  if (ledTime >= timeInterval * 6 && ledTime < timeInterval * 7) {
+    brightness = 165;
+    color = strip.Color(0, 240, 135);
     TurnOff(LED_PIN15);
     TurnOff(LED_PIN19);
     TurnOff(LED_PIN23);
     TurnOff(LED_PIN25);
-    
+
     TurnOn(LED_PIN24);
   };
-  if (ledTime >= 6000) {
+  if (ledTime >= timeInterval * 7) {
     TurnOff(LED_PIN24);
-    
-    ledTime -= 6000;
+
+    ledTime -= timeInterval * 7;
   }
 }
 
@@ -360,79 +397,93 @@ void DirectionRipple3(long elapsedTime) {
   static long ledTime = 0;
   ledTime += elapsedTime;
 
-  if (ledTime <= 1000) {
+  if (ledTime <= timeInterval) {
+    brightness = 255;
+    color = strip.Color(0, 0, 255);
     TurnOn(LED_PIN6);
   };
-  if (ledTime >= 1000 && ledTime < 2000) {
+  if (ledTime >= timeInterval && ledTime < timeInterval * 2) {
+    brightness = 240;
+    color = strip.Color(0, 40, 235);
     TurnOff(LED_PIN6);
-    
+
     TurnOn(LED_PIN1);
     TurnOn(LED_PIN5);
     TurnOn(LED_PIN10);
     TurnOn(LED_PIN15);
   };
-  if (ledTime >= 2000 && ledTime < 3000) {
+  if (ledTime >= timeInterval * 2 && ledTime < timeInterval * 3) {
+    brightness = 225;
+    color = strip.Color(0, 80, 215);
     TurnOff(LED_PIN1);
     TurnOff(LED_PIN5);
     TurnOff(LED_PIN10);
     TurnOff(LED_PIN15);
-    
+
     TurnOn(LED_PIN4);
     TurnOn(LED_PIN9);
     TurnOn(LED_PIN14);
     TurnOn(LED_PIN19);
     TurnOn(LED_PIN24);
   };
-  if (ledTime >= 3000 && ledTime < 4000) {
+  if (ledTime >= timeInterval * 3 && ledTime < timeInterval * 4) {
+    brightness = 210;
+    color = strip.Color(0, 120, 195);
     TurnOff(LED_PIN4);
     TurnOff(LED_PIN9);
     TurnOff(LED_PIN14);
     TurnOff(LED_PIN19);
     TurnOff(LED_PIN24);
-    
+
     TurnOn(LED_PIN3);
     TurnOn(LED_PIN8);
     TurnOn(LED_PIN13);
     TurnOn(LED_PIN18);
     TurnOn(LED_PIN23);
   };
-  if (ledTime >= 4000 && ledTime < 5000) {
+  if (ledTime >= timeInterval * 4 && ledTime < timeInterval * 5) {
+    brightness = 195;
+    color = strip.Color(0, 160, 175);
     TurnOff(LED_PIN3);
     TurnOff(LED_PIN8);
     TurnOff(LED_PIN13);
     TurnOff(LED_PIN18);
     TurnOff(LED_PIN23);
-    
+
     TurnOn(LED_PIN2);
     TurnOn(LED_PIN7);
     TurnOn(LED_PIN12);
     TurnOn(LED_PIN17);
     TurnOn(LED_PIN22);
   };
-  if (ledTime >= 5000 && ledTime < 6000) {
+  if (ledTime >= timeInterval * 5 && ledTime < timeInterval * 6) {
+    brightness = 180;
+    color = strip.Color(0, 200, 155);
     TurnOff(LED_PIN2);
     TurnOff(LED_PIN7);
     TurnOff(LED_PIN12);
     TurnOff(LED_PIN17);
     TurnOff(LED_PIN22);
-    
+
     TurnOn(LED_PIN11);
     TurnOn(LED_PIN16);
     TurnOn(LED_PIN21);
     TurnOn(LED_PIN25);
   };
-  if (ledTime >= 5000 && ledTime < 6000) {
+  if (ledTime >= timeInterval * 6 && ledTime < timeInterval * 7) {
+    brightness = 165;
+    color = strip.Color(0, 240, 135);
     TurnOff(LED_PIN11);
     TurnOff(LED_PIN16);
     TurnOff(LED_PIN21);
     TurnOff(LED_PIN25);
-    
+
     TurnOn(LED_PIN20);
   };
-  if (ledTime >= 6000) {
+  if (ledTime >= timeInterval * 7) {
     TurnOff(LED_PIN20);
-    
-    ledTime -= 6000;
+
+    ledTime -= timeInterval * 7;
   }
 }
 
@@ -440,158 +491,186 @@ void DirectionRipple4(long elapsedTime) {
   static long ledTime = 0;
   ledTime += elapsedTime;
 
-  if (ledTime <= 1000) {
+  if (ledTime <= timeInterval) {
+    brightness = 255;
+    color = strip.Color(0, 0, 255);
     TurnOn(LED_PIN20);
   };
-  if (ledTime >= 1000 && ledTime < 2000) {
+  if (ledTime >= timeInterval && ledTime < timeInterval * 2) {
+    brightness = 240;
+    color = strip.Color(0, 40, 235);
     TurnOff(LED_PIN20);
-    
+
     TurnOn(LED_PIN11);
     TurnOn(LED_PIN16);
     TurnOn(LED_PIN21);
     TurnOn(LED_PIN25);
   };
-  if (ledTime >= 2000 && ledTime < 3000) {
+  if (ledTime >= timeInterval * 2 && ledTime < timeInterval * 3) {
+    brightness = 225;
+    color = strip.Color(0, 80, 215);
     TurnOff(LED_PIN11);
     TurnOff(LED_PIN16);
     TurnOff(LED_PIN21);
     TurnOff(LED_PIN25);
-    
+
     TurnOn(LED_PIN2);
     TurnOn(LED_PIN7);
     TurnOn(LED_PIN12);
     TurnOn(LED_PIN17);
     TurnOn(LED_PIN22);
   };
-  if (ledTime >= 3000 && ledTime < 4000) {
+  if (ledTime >= timeInterval * 3 && ledTime < timeInterval * 4) {
+    brightness = 210;
+    color = strip.Color(0, 120, 195);
     TurnOff(LED_PIN2);
     TurnOff(LED_PIN7);
     TurnOff(LED_PIN12);
     TurnOff(LED_PIN17);
     TurnOff(LED_PIN22);
-    
+
     TurnOn(LED_PIN3);
     TurnOn(LED_PIN8);
     TurnOn(LED_PIN13);
     TurnOn(LED_PIN18);
     TurnOn(LED_PIN23);
   };
-  if (ledTime >= 4000 && ledTime < 5000) {
+  if (ledTime >= timeInterval * 4 && ledTime < timeInterval * 5) {
+    brightness = 195;
+    color = strip.Color(0, 160, 175);
     TurnOff(LED_PIN3);
     TurnOff(LED_PIN8);
     TurnOff(LED_PIN13);
     TurnOff(LED_PIN18);
     TurnOff(LED_PIN23);
-    
+
     TurnOn(LED_PIN4);
     TurnOn(LED_PIN9);
     TurnOn(LED_PIN14);
     TurnOn(LED_PIN19);
     TurnOn(LED_PIN24);
   };
-  if (ledTime >= 5000 && ledTime < 6000) {
+  if (ledTime >= timeInterval * 5 && ledTime < timeInterval * 6) {
+    brightness = 180;
+    color = strip.Color(0, 200, 155);
     TurnOff(LED_PIN4);
     TurnOff(LED_PIN9);
     TurnOff(LED_PIN14);
     TurnOff(LED_PIN19);
     TurnOff(LED_PIN24);
-    
+
     TurnOn(LED_PIN1);
     TurnOn(LED_PIN5);
     TurnOn(LED_PIN10);
     TurnOn(LED_PIN15);
   };
-  if (ledTime >= 5000 && ledTime < 6000) {
+  if (ledTime >= timeInterval * 6 && ledTime < timeInterval * 7) {
+    brightness = 165;
+    color = strip.Color(0, 240, 135);
     TurnOff(LED_PIN1);
     TurnOff(LED_PIN5);
     TurnOff(LED_PIN10);
     TurnOff(LED_PIN15);
-    
+
     TurnOn(LED_PIN6);
   };
-  if (ledTime >= 6000) {
+  if (ledTime >= timeInterval * 7) {
     TurnOff(LED_PIN6);
-    
-    ledTime -= 6000;
+
+    ledTime -= timeInterval * 7;
   }
 }
 
 void DirectionRipple5(long elapsedTime) {
   static long ledTime = 0;
   ledTime += elapsedTime;
-  if (ledTime <= 1000) {
+  if (ledTime <= timeInterval) {
+    brightness = 255;
+    color = strip.Color(0, 0, 255);
     TurnOn(LED_PIN24);
   };
-  if (ledTime >= 1000 && ledTime < 2000) {
+  if (ledTime >= timeInterval && ledTime < timeInterval * 2) {
+    brightness = 240;
+    color = strip.Color(0,40, 235);
     TurnOff(LED_PIN24);
-    
+
     TurnOn(LED_PIN15);
     TurnOn(LED_PIN19);
     TurnOn(LED_PIN23);
     TurnOn(LED_PIN25);
   };
-  if (ledTime >= 2000 && ledTime < 3000) {
+  if (ledTime >= timeInterval * 2 && ledTime < timeInterval * 3) {
+    brightness = 225;
+    color = strip.Color(0,80,215);
     TurnOff(LED_PIN15);
     TurnOff(LED_PIN19);
     TurnOff(LED_PIN23);
     TurnOff(LED_PIN25);
-    
+
     TurnOn(LED_PIN6);
     TurnOn(LED_PIN10);
     TurnOn(LED_PIN14);
     TurnOn(LED_PIN18);
     TurnOn(LED_PIN22);
   };
-  if (ledTime >= 3000 && ledTime < 4000) {
+  if (ledTime >= timeInterval * 3 && ledTime < timeInterval * 4) {
+    brightness = 210;
+    color = strip.Color(0,120,195);
     TurnOff(LED_PIN6);
     TurnOff(LED_PIN10);
     TurnOff(LED_PIN14);
     TurnOff(LED_PIN18);
     TurnOff(LED_PIN22);
-    
+
     TurnOn(LED_PIN5);
     TurnOn(LED_PIN9);
     TurnOn(LED_PIN13);
     TurnOn(LED_PIN17);
     TurnOn(LED_PIN21);
   };
-  if (ledTime >= 4000 && ledTime < 5000) {
+  if (ledTime >= timeInterval * 4 && ledTime < timeInterval * 5) {
+    brightness = 195;
+    color = strip.Color(0,160,175);
     TurnOff(LED_PIN5);
     TurnOff(LED_PIN9);
     TurnOff(LED_PIN13);
     TurnOff(LED_PIN17);
     TurnOff(LED_PIN21);
-    
+
     TurnOn(LED_PIN4);
     TurnOn(LED_PIN8);
     TurnOn(LED_PIN12);
     TurnOn(LED_PIN16);
     TurnOn(LED_PIN20);
   };
-  if (ledTime >= 5000 && ledTime < 6000) {
+  if (ledTime >= timeInterval * 5 && ledTime < timeInterval * 6) {
+    brightness = 180;
+    color = strip.Color(0,200,155);
     TurnOff(LED_PIN4);
     TurnOff(LED_PIN8);
     TurnOff(LED_PIN12);
     TurnOff(LED_PIN16);
     TurnOff(LED_PIN20);
-    
+
     TurnOn(LED_PIN1);
     TurnOn(LED_PIN3);
     TurnOn(LED_PIN7);
     TurnOn(LED_PIN11);
   };
-  if (ledTime >= 5000 && ledTime < 6000) {
+  if (ledTime >= timeInterval * 6 && ledTime < timeInterval * 7) {
+    brightness = 165;
+    color = strip.Color(0,240,135);
     TurnOff(LED_PIN1);
     TurnOff(LED_PIN3);
     TurnOff(LED_PIN7);
     TurnOff(LED_PIN11);
-    
+
     TurnOn(LED_PIN2);
   };
-  if (ledTime >= 6000) {
+  if (ledTime >= timeInterval * 7) {
     TurnOff(LED_PIN2);
-    
-    ledTime -= 6000;
+
+    ledTime -= timeInterval * 7;
   }
 }
 
@@ -599,79 +678,93 @@ void DirectionRipple6(long elapsedTime) {
   static long ledTime = 0;
   ledTime += elapsedTime;
 
-  if (ledTime <= 1000) {
+  if (ledTime <= timeInterval) {
+    brightness = 255;
+    color = strip.Color(0,0,255); 
     TurnOn(LED_PIN25);
   };
-  if (ledTime >= 1000 && ledTime < 2000) {
+  if (ledTime >= timeInterval && ledTime < timeInterval * 2) {
+    brightness = 240;
+    color = strip.Color(0,40, 235);
     TurnOff(LED_PIN25);
-    
+
     TurnOn(LED_PIN20);
     TurnOn(LED_PIN21);
     TurnOn(LED_PIN22);
     TurnOn(LED_PIN23);
     TurnOn(LED_PIN24);
   };
-  if (ledTime >= 2000 && ledTime < 3000) {
+  if (ledTime >= timeInterval * 2 && ledTime < timeInterval * 3) {
+    brightness = 225;
+    color = strip.Color(0,80,215);
     TurnOff(LED_PIN20);
     TurnOff(LED_PIN21);
     TurnOff(LED_PIN22);
     TurnOff(LED_PIN23);
     TurnOff(LED_PIN24);
-    
+
     TurnOn(LED_PIN16);
     TurnOn(LED_PIN17);
     TurnOn(LED_PIN18);
     TurnOn(LED_PIN19);
   };
-  if (ledTime >= 3000 && ledTime < 4000) {
+  if (ledTime >= timeInterval * 3 && ledTime < timeInterval * 4) {
+    brightness = 210;
+    color = strip.Color(0,120,195);
     TurnOff(LED_PIN16);
     TurnOff(LED_PIN17);
     TurnOff(LED_PIN18);
     TurnOff(LED_PIN19);
-    
+
     TurnOn(LED_PIN11);
     TurnOn(LED_PIN12);
     TurnOn(LED_PIN13);
     TurnOn(LED_PIN14);
     TurnOn(LED_PIN15);
   };
-  if (ledTime >= 4000 && ledTime < 5000) {
+  if (ledTime >= timeInterval * 4 && ledTime < timeInterval * 5) {
+    brightness = 195;
+    color = strip.Color(0,160,175);
     TurnOff(LED_PIN11);
     TurnOff(LED_PIN12);
     TurnOff(LED_PIN13);
     TurnOff(LED_PIN14);
     TurnOff(LED_PIN15);
-    
+
     TurnOn(LED_PIN7);
     TurnOn(LED_PIN8);
     TurnOn(LED_PIN9);
     TurnOn(LED_PIN10);
   };
-  if (ledTime >= 5000 && ledTime < 6000) {
+  if (ledTime >= timeInterval * 5 && ledTime < timeInterval * 6) {
+    brightness = 180;
+    color = strip.Color(0,200,155);
     TurnOff(LED_PIN7);
     TurnOff(LED_PIN8);
     TurnOff(LED_PIN9);
     TurnOff(LED_PIN10);
-    
+
     TurnOn(LED_PIN2);
     TurnOn(LED_PIN3);
     TurnOn(LED_PIN4);
     TurnOn(LED_PIN5);
     TurnOn(LED_PIN6);
   };
-  if (ledTime >= 5000 && ledTime < 6000) {
+  if (ledTime >= timeInterval * 6 && ledTime < timeInterval * 7) {
+    brightness = 165;
+    color = strip.Color(0,240,135);
     TurnOff(LED_PIN2);
     TurnOff(LED_PIN3);
     TurnOff(LED_PIN4);
     TurnOff(LED_PIN5);
     TurnOff(LED_PIN6);
-    
+
     TurnOn(LED_PIN1);
   };
-  if (ledTime >= 6000) {
+  if (ledTime >= timeInterval * 7) {
     TurnOff(LED_PIN1);
-    
-    ledTime -= 6000;
+
+    ledTime -= timeInterval * 7;
   }
 }
 
@@ -679,7 +772,7 @@ void loop() {
   // put your main code here, to run repeatedly:
   long elapsedTime = millis() - lastTime; //get time elapsed
   lastTime += elapsedTime;
-  //  CenterRipple(elapsedTime);
+  CenterRipple(elapsedTime);
 
 
   //  bool sensor1Triggered = SensorIsTriggered(trigPin1, echoPin1);
@@ -712,10 +805,10 @@ void loop() {
   //    }
   //  }
   //
-  if (SensorIsTriggered(trigPin3, echoPin3)) {
-
-    DirectionRipple1(elapsedTime);
-  }
+  //  if (SensorIsTriggered(trigPin3, echoPin3)) {
+  //
+  //    DirectionRipple1(elapsedTime);
+  //  }
   //
   //  triggeredNo = 0;
 }
