@@ -127,7 +127,7 @@ void setAllTubes_pixel(uint32_t color, long pixel) {
       continue;
     } else if (i == 39) {
       strip3.setPin(i);
-      int pi = pixel + 5;
+      int pi = pixel + 8;
       strip3.setPixelColor(pi, color);
       Serial.println(pi);
       strip3.show();
@@ -141,7 +141,65 @@ void setAllTubes_pixel(uint32_t color, long pixel) {
   }
 }
 
-void raise(long elapsedTime, uint32_t color) {
+void raise(long elapsedTime) {
+  static long ledTime = 0;
+  static long raiseTime = 0;
+  static long pixel = 0;
+
+  ledTime += elapsedTime;
+
+  if (ledTime >= beat[i] - 400) {
+    raiseTime = ledTime - beat[i];
+    if (raiseTime <= 1000) {
+
+      if (raiseTime < 700) {
+        setAllTubes_pixel(strip.Color(255, 0, 255), pixel);
+        pixel++;
+        setAllTubes_pixel(strip.Color(255, 0, 255), pixel);
+        pixel++;
+        setAllTubes_pixel(strip.Color(255, 0, 255), pixel);
+        pixel++;
+        setAllTubes_pixel(strip.Color(255, 0, 255), pixel);
+        pixel++;
+        setAllTubes_pixel(strip.Color(255, 0, 255), pixel);
+        pixel++;
+        Serial.println("===============");
+      }
+      else {
+        setAllTubes_pixel(strip.Color(0, 0, 0), pixel);
+        pixel--;
+        setAllTubes_pixel(strip.Color(0, 0, 0), pixel);
+        pixel--;
+        setAllTubes_pixel(strip.Color(0, 0, 0), pixel);
+        pixel--;
+        setAllTubes_pixel(strip.Color(0, 0, 0), pixel);
+        pixel--;
+        setAllTubes_pixel(strip.Color(0, 0, 0), pixel);
+        pixel--;
+      }
+
+      strip.show();
+      strip3.show();
+      //Serial.println("raiseTime :" + String(raiseTime));
+    } else {
+      strip.clear();
+      strip.show();
+      strip3.clear();
+      strip3.show();
+      pixel = 0;
+      i += 1;
+    }
+
+  }
+  else {
+    strip.clear();
+    strip.show();
+    strip3.clear();
+    strip3.show();
+  }
+}
+
+void raiseColor(long elapsedTime, uint32_t color) {
   static long ledTime = 0;
   static long raiseTime = 0;
   static long pixel = 0;
@@ -207,13 +265,14 @@ void loop() {
   lastTime = lastTime + elapsedTime;
 
 
-  uint32_t color = strip.Color(int(payload["red"]), int(payload["green"]), int(payload["blue"]));
-  raise(elapsedTime, color);
+//  uint32_t color = strip.Color(int(payload["red"]), int(payload["green"]), int(payload["blue"]));
+//  raise(elapsedTime, color);
 
-  //    strip.setPin(2);
-  //    strip.fill(color);
-  //    strip.setPin(3);
-  //    strip.fill(color);
-  //    strip.setPin(4);
-  //    strip.fill(color);
-}
+  raise(elapsedTime);
+
+//      strip.setPin(50);
+//      strip.fill(strip.Color(255,0,0));
+//      strip.show();
+
+
+      }
