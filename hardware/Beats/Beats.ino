@@ -1,7 +1,9 @@
 #include <Adafruit_NeoPixel.h>
+#include <Arduino_JSON.h>
 #ifdef __AVR__
 #include <avr/power.h> // Required for 16 MHz Adafruit Trinket
 #endif
+
 #define LED_PIN1 1
 #define LED_PIN2 39
 #define LED_PIN3 4
@@ -139,38 +141,27 @@ void setAllTubes_pixel(uint32_t color, long pixel) {
   }
 }
 
-void raise(long elapsedTime) {
-  //  strip.clear();
-  ////  strip.show();
-  //  strip.setPin(pin);
-  //  static long ledTime[25];
-
+void raise(long elapsedTime, uint32_t color) {
   static long ledTime = 0;
   static long raiseTime = 0;
   static long pixel = 0;
 
-
   ledTime += elapsedTime;
-
 
   if (ledTime >= beat[i] - 400) {
     raiseTime = ledTime - beat[i];
     if (raiseTime <= 1000) {
-      //      if (raiseTime%(400/30) <= 30) {
-      //        setAllTubes_pixel(strip.Color(255,0,255),pixel);
-      //        pixel++;
-      //      }
 
       if (raiseTime < 800) {
-        setAllTubes_pixel(strip.Color(255, 0, 255), pixel);
+        setAllTubes_pixel(color, pixel);
         pixel++;
-        setAllTubes_pixel(strip.Color(255, 0, 255), pixel);
+        setAllTubes_pixel(color, pixel);
         pixel++;
-        setAllTubes_pixel(strip.Color(255, 0, 255), pixel);
+        setAllTubes_pixel(color, pixel);
         pixel++;
-        setAllTubes_pixel(strip.Color(255, 0, 255), pixel);
+        setAllTubes_pixel(color, pixel);
         pixel++;
-        setAllTubes_pixel(strip.Color(255, 0, 255), pixel);
+        setAllTubes_pixel(color, pixel);
         pixel++;
         Serial.println("===============");
       }
@@ -179,7 +170,10 @@ void raise(long elapsedTime) {
         pixel--;
         setAllTubes_pixel(strip.Color(0, 0, 0), pixel);
         pixel--;
-
+        setAllTubes_pixel(strip.Color(0, 0, 0), pixel);
+        pixel--;
+        setAllTubes_pixel(strip.Color(0, 0, 0), pixel);
+        pixel--;
       }
 
       strip.show();
@@ -203,6 +197,9 @@ void raise(long elapsedTime) {
   }
 }
 
+// from rasberry pi to arduino
+JSONVar payload;
+String mode;
 
 void loop() {
   // put your main code here, to run repeatedly:
@@ -210,11 +207,13 @@ void loop() {
   lastTime = lastTime + elapsedTime;
 
 
-  raise(elapsedTime);
+  uint32_t color = strip.Color(int(payload["red"]), int(payload["green"]), int(payload["blue"]));
+  raise(elapsedTime, color);
 
-
-  //    // 8
-  //    raise(elapsedTime, 22);
-
-  // 27
+  //    strip.setPin(2);
+  //    strip.fill(color);
+  //    strip.setPin(3);
+  //    strip.fill(color);
+  //    strip.setPin(4);
+  //    strip.fill(color);
 }
