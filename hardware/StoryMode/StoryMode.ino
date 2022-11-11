@@ -12,7 +12,7 @@
 
 Adafruit_NeoPixel strip(LED_COUNT, LED_PIN1, NEO_BRG + NEO_KHZ800);
 
-int brightness = 200;
+int brightness = 250;
 int wait = 1000;
 int buttonState = 0;
 
@@ -178,21 +178,22 @@ void storymode(long elapsedTime) {
 //  static unsigned long storymodeTime = 0;
   storymodeTime += elapsedTime;
 
-  if (storymodeTime < 36000) {  // 36000
+  if (storymodeTime < 2000) {  // 36000
     sky_storymode();
 
-  } else if (storymodeTime < 47000) { //47000
+  } else if (storymodeTime < 4000) { //47000
     lightning_storymode();
 
-  } else if (storymodeTime < 83000) {
+  } else if (storymodeTime < 6000) { //83000
     rain_storymode();
 
-  } else if (storymodeTime < 119000) {
+  } else if (storymodeTime < 119000) {  //119000
     // sunshine
     sunshine_storymode();
 
   } else if (storymodeTime < 155000){
     // rainbow
+    rainbow_storymode();
   } else {
     storymodeTime = 0;
   }
@@ -212,7 +213,7 @@ void sky_storymode(){
     if (darken)
     {
       skyIndex -= 6;
-      if (skyIndex <= 98) {
+      if (skyIndex <= 2) {
         darken = false;
       }
     } else {                 // lighten
@@ -231,16 +232,22 @@ void lightning_storymode(){
     if (storymodeTime > 37000 && storymodeTime < 37300) {            // lightning
       setAllTubes(strip.Color(255, 255, 255));
     } else if (storymodeTime < 40000) {     // dark blue
-      setAllTubes(strip.Color(0, 64, 255));
+      strip.setBrightness(510);
+      setAllTubes(strip.Color(0, 32, 127));
     } else if (storymodeTime < 40300) {     // lightning
+      strip.setBrightness(brightness);
       setAllTubes(strip.Color(255, 255, 255));
     } else if (storymodeTime < 41000) {     // dark blue
-      setAllTubes(strip.Color(64, 0, 255));
+      strip.setBrightness(10);
+      setAllTubes(strip.Color(16, 0, 63));
     } else if (storymodeTime < 41300) {     // lightning
+      strip.setBrightness(brightness);
       setAllTubes(strip.Color(255, 255, 255));
     } else if (storymodeTime < 41600) {     // dark blue
-      setAllTubes(strip.Color(64, 0, 255));
+      strip.setBrightness(10);
+      setAllTubes(strip.Color(16, 0, 63));
     } else if (storymodeTime < 42000) {     // lightning
+      strip.setBrightness(brightness);
       setAllTubes(strip.Color(255, 255, 255));
     } else {      // no color
       setAllTubes(strip.Color(0, 0, 0));
@@ -249,7 +256,7 @@ void lightning_storymode(){
 
 void rain_storymode(){
   Serial.println("RAINNNNNN : " + String(storymodeTime));
-  const int maxpixels = 20;
+  const int maxpixels = 30;
 
     // rain (36s)
     static int pixelCount = 1; // x1,x2 : rain ; x3 : not rain
@@ -310,38 +317,51 @@ void sunshine_storymode(){
 
   Serial.println("SUNSHINEEEEEEEE : " + String(storymodeTime));
   static boolean begining = true;
-  int maxpixels = 20;
+  static int loopCount = 1;
+  int maxpixels = 30;
   
   // flow down
-  for(int i = maxpixels ; i >=0 ; i--){
-    setAllTubes_pixel(strip.Color(255,255,204));
-  }
+  if(begining == true){
+    for(int i = maxpixels ; i >=0 ; i--){
+    setAllTubes_pixel(strip.Color(255,204,0),i);
+    }
   begining = false;
-
+  }
+  
   // fade between light and dark yellow
   // light yellow : 255,255,204
   // dark yellow : 255,255,0
 
     static boolean darken = true;
-    static int sunIndex = 204;
+    static int sunIndex = 254;
 
     if (darken)
     {
-      sunIndex -= 6;         // darken
-      if (sunIndex <= 0) {
+      sunIndex -= 3;         // darken
+      if (sunIndex <= 204) {
         darken = false;
       }
     } else {                 // lighten
-      sunIndex += 6;
-      if (sunIndex >= 204) {
+      sunIndex += 3;
+      if (sunIndex >= 254) {
         darken = true;
       }
     }
-    setAllTubes(strip.Color(255, 255, sunIndex));
+
+//    if(loopCount%4 == 0){
+//      for(int i = maxpixels ; i >=0 ; i--){
+//      Serial.println("SUNSHINEEEEEEEE : FLOWWWWWWWWWWWW");
+//      setAllTubes_pixel(strip.Color(255,sunIndex,0),i);
+//      }
+//    }
+    
+    setAllTubes(strip.Color(255, sunIndex, 0));
+
+    loopCount++;
   
 }
 
-void rainbow(){
+void rainbow_storymode(){
 
   Serial.println("RAINBOWWWWWWWWW : " + String(storymodeTime));
 
@@ -357,7 +377,7 @@ void rainbow(){
 
   static int colorCount = 1;
 
-  if(colorCount==1){
+  if(colorCount/8==1){
     setRow1Tubes(strip.Color(255, 0, 0));
     setRow2Tubes(strip.Color(255, 64, 0));
     setRow3Tubes(strip.Color(255, 128, 0));
@@ -365,7 +385,7 @@ void rainbow(){
     setRow5Tubes(strip.Color(0, 255, 0));
     setRow6Tubes(strip.Color(0, 64, 255));
     setRow7Tubes(strip.Color(64, 0, 255));
-  }else if(colorCount==2){
+  }else if(colorCount/8==2){
     setRow1Tubes(strip.Color(64, 0, 255));
     setRow2Tubes(strip.Color(255, 0, 0));
     setRow3Tubes(strip.Color(255, 64, 0));
@@ -373,7 +393,7 @@ void rainbow(){
     setRow5Tubes(strip.Color(255, 255, 0));
     setRow6Tubes(strip.Color(0, 255, 0));
     setRow7Tubes(strip.Color(0, 64, 255));
-  }else if(colorCount==3){
+  }else if(colorCount/8==3){
     setRow1Tubes(strip.Color(0, 64, 255));
     setRow2Tubes(strip.Color(64, 0, 255));
     setRow3Tubes(strip.Color(255, 0, 0));
@@ -381,7 +401,7 @@ void rainbow(){
     setRow5Tubes(strip.Color(255, 128, 0));
     setRow6Tubes(strip.Color(255, 255, 0));
     setRow7Tubes(strip.Color(0, 255, 0));
-  }else if(colorCount==4){
+  }else if(colorCount/8==4){
     setRow1Tubes(strip.Color(0, 255, 0));
     setRow2Tubes(strip.Color(0, 64, 255));
     setRow3Tubes(strip.Color(64, 0, 255));
@@ -389,7 +409,7 @@ void rainbow(){
     setRow5Tubes(strip.Color(255, 64, 0));
     setRow6Tubes(strip.Color(255, 128, 0));
     setRow7Tubes(strip.Color(255, 255, 0));
-  }else if(colorCount==5){
+  }else if(colorCount/8==5){
     setRow1Tubes(strip.Color(255, 255, 0));
     setRow2Tubes(strip.Color(0, 255, 0));
     setRow3Tubes(strip.Color(0, 64, 255));
@@ -397,7 +417,7 @@ void rainbow(){
     setRow5Tubes(strip.Color(255, 0, 0));
     setRow6Tubes(strip.Color(255, 64, 0));
     setRow7Tubes(strip.Color(255, 128, 0));
-  }else if(colorCount==6){
+  }else if(colorCount/8==6){
     setRow1Tubes(strip.Color(255, 128, 0));
     setRow2Tubes(strip.Color(255, 255, 0));
     setRow3Tubes(strip.Color(0, 255, 0));
@@ -405,7 +425,7 @@ void rainbow(){
     setRow5Tubes(strip.Color(64, 0, 255));
     setRow6Tubes(strip.Color(255, 0, 0));
     setRow7Tubes(strip.Color(255, 64, 0));
-  }else if(colorCount==7){
+  }else if(colorCount/8==7){
     setRow1Tubes(strip.Color(255, 64, 0));
     setRow2Tubes(strip.Color(255, 128, 0));
     setRow3Tubes(strip.Color(255, 255, 0));
@@ -413,12 +433,11 @@ void rainbow(){
     setRow5Tubes(strip.Color(0, 64, 255));
     setRow6Tubes(strip.Color(64, 0, 255));
     setRow7Tubes(strip.Color(255, 0, 0));
-    setRow8Tubes(strip.Color(255, 64, 0));
   }
   
 
   // increment
-    if (colorCount == 7) {
+    if (colorCount == 56) {
       colorCount = 1;
     } else {
       colorCount++;
@@ -427,96 +446,96 @@ void rainbow(){
 }
 
 void setRow1Tubes(uint32_t color) {
-      strip.setPin(i);
+      strip.setPin(32);
       strip.fill(color);
       strip.show();
 }
 
 void setRow2Tubes(uint32_t color) {
-      strip.setPin(i);
+      strip.setPin(41);
       strip.fill(color);
       strip.show();
-      strip.setPin(i);
+      strip.setPin(36);
       strip.fill(color);
       strip.show();
-      strip.setPin(i);
+      strip.setPin(31);
       strip.fill(color);
       strip.show();
-      strip.setPin(i);
+      strip.setPin(27);
       strip.fill(color);
       strip.show();
 }
 void setRow3Tubes(uint32_t color) {
-      strip.setPin(i);
+      strip.setPin(50);
       strip.fill(color);
       strip.show();
-      strip.setPin(i);
+      strip.setPin(45);
       strip.fill(color);
       strip.show();
-      strip.setPin(i);
+      strip.setPin(40);
       strip.fill(color);
       strip.show();
-      strip.setPin(i);
+      strip.setPin(35);
       strip.fill(color);
       strip.show();
-      strip.setPin(i);
+      strip.setPin(30);
       strip.fill(color);
       strip.show();
 }
 
 void setRow4Tubes(uint32_t color) {
-      strip.setPin(i);
+      strip.setPin(49);
       strip.fill(color);
       strip.show();
-      strip.setPin(i);
+      strip.setPin(44);
       strip.fill(color);
       strip.show();
-      strip.setPin(i);
+      strip.setPin(39);
       strip.fill(color);
       strip.show();
-      strip.setPin(i);
+      strip.setPin(22);
       strip.fill(color);
       strip.show();
-      strip.setPin(i);
+      strip.setPin(29);
       strip.fill(color);
       strip.show();
 }
 
 void setRow5Tubes(uint32_t color) {
-      strip.setPin(i);
+      strip.setPin(28);
       strip.fill(color);
       strip.show();
-      strip.setPin(i);
+      strip.setPin(48);
       strip.fill(color);
       strip.show();
-      strip.setPin(i);
+      strip.setPin(43);
       strip.fill(color);
       strip.show();
-      strip.setPin(i);
+      strip.setPin(38);
       strip.fill(color);
       strip.show();
-      strip.setPin(i);
+      strip.setPin(33);
       strip.fill(color);
       strip.show();
 }
 
 void setRow6Tubes(uint32_t color) {
-      strip.setPin(i);
+      strip.setPin(51);
       strip.fill(color);
       strip.show();
-      strip.setPin(i);
+      strip.setPin(47);
       strip.fill(color);
       strip.show();
-      strip.setPin(i);
+      strip.setPin(42);
       strip.fill(color);
       strip.show();
-      strip.setPin(i);
+      strip.setPin(37);
       strip.fill(color);
       strip.show();
 }
 
 void setRow7Tubes(uint32_t color) {
-      strip.setPin(i);
+      strip.setPin(46);
       strip.fill(color);
       strip.show();
 }
@@ -651,9 +670,11 @@ void loop() {
 
   //    raise(elapsedTime);
 
-  //  strip.setPin(6);
-  //  strip.fill(strip.Color(255, 0, 0));
-  //  strip.show();
+//    strip.setPin(51);
+//    strip.fill(strip.Color(0, 0, 255));
+//    strip.show();
+
+//    setAllTubes(strip.Color(0,0,0));
 
 
   //  Serial.println(elapsedTime);
