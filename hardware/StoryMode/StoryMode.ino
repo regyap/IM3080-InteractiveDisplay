@@ -178,13 +178,13 @@ void storymode(long elapsedTime) {
 //  static unsigned long storymodeTime = 0;
   storymodeTime += elapsedTime;
 
-  if (storymodeTime < 2000) {  // 36000
+  if (storymodeTime < 36000) {  // 36000
     sky_storymode();
 
-  } else if (storymodeTime < 4000) { //47000
+  } else if (storymodeTime < 47000) { //47000
     lightning_storymode();
 
-  } else if (storymodeTime < 6000) { //83000
+  } else if (storymodeTime < 83000) { //83000
     rain_storymode();
 
   } else if (storymodeTime < 119000) {  //119000
