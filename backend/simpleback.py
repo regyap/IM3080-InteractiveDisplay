@@ -72,6 +72,7 @@ def disconnect():
 @socket.on('disconnect')
 def disconnect():
     Queue.query.filter_by(id=request.sid).delete()
+    Session.query.filter_by(id=request.sid).delete()
     db.session.commit()
     print(request.sid + " disconnected")
 
