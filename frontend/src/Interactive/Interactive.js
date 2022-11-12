@@ -7,8 +7,11 @@ import "./Interactive.css";
 function Interactive() {
   const navigate = useNavigate();
 
+  const [currentState, setCurrentState] = useState("");
+
   function emitReq(button) {
     const data = { mode: button };
+    setCurrentState(button);
     socketOBJ.emit("buttonPressed", data);
   }
   function onBack(e) {
@@ -20,8 +23,8 @@ function Interactive() {
       <div className="forminput">
         <button
           value="Ripple"
-          className="fButton"
-          onClick={() => emitReq("/control")}
+          className={currentState === "ripple" ? "fButtonActivated" : "fButton"}
+          onClick={() => emitReq("ripple")}
           // style={ emitReq ?  'border: 1px solid black': 'border: 1px solid grey' }
         >
           Ripple
@@ -29,8 +32,8 @@ function Interactive() {
 
         <button
           value="Wave"
-          class="fButton"
-          onClick={() => navigate("/control/interactive")}
+          className={currentState === "wave" ? "fButtonActivated" : "fButton"}
+          onClick={() => emitReq("wave")}
         >
           Wave
         </button>

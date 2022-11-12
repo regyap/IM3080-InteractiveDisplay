@@ -8,6 +8,7 @@ function FrontPage(props) {
   const navigate = useNavigate();
   const [timeLeft, setTimeLeft] = useState("");
   const [inUse, setInUse] = useState(true);
+  const [currentState, setCurrentState] = useState("");
   // use timeleft countdown 3min use state, dont select.
 
   useEffect(() => {
@@ -26,6 +27,7 @@ function FrontPage(props) {
   // function checkInUse
 
   function emitReq(button) {
+    setCurrentState(button);
     const data = { mode: button };
     socketOBJ.emit("buttonPressed", data);
   }
@@ -47,8 +49,10 @@ function FrontPage(props) {
       <div className="forminput">
         <button
           value="Story Mode"
-          className="fButton"
-          onClick={() => emitReq("/control")}
+          className={
+            currentState === "storyMode" ? "fButtonActivated" : "fButton"
+          }
+          onClick={() => emitReq("storyMode")}
           // style={ emitReq ?  'border: 1px solid black': 'border: 1px solid grey' }
         >
           Story<br></br> Mode
