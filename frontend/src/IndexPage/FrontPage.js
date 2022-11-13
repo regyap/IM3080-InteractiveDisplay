@@ -8,6 +8,7 @@ function FrontPage(props) {
   const navigate = useNavigate();
   const [timeLeft, setTimeLeft] = useState("");
   const [inUse, setInUse] = useState(true);
+  const [currentState, setCurrentState] = useState("");
   // use timeleft countdown 3min use state, dont select.
 
   useEffect(() => {
@@ -20,17 +21,16 @@ function FrontPage(props) {
         );
         setTimeLeft(minutesLeft + "m " + secondsLeft + "s");
       }
-    
     }, 1000);
     return () => clearInterval(interval);
   }, []);
   // function checkInUse
 
   function emitReq(button) {
+    setCurrentState(button);
     const data = { mode: button };
     socketOBJ.emit("buttonPressed", data);
   }
-   
 
   return (
     <>
@@ -41,26 +41,28 @@ function FrontPage(props) {
             "inset 0 0 50px #fff,inset 20px 0 80px #f0f,inset -20px 0 80px #0ff,inset 20px 0 300px #f0f,inset -20px 0 300px #0ff",
         }}
       >
-        <Card.Body className = "shiftTop">
-          <Card.Title >{"Time Left " + timeLeft}</Card.Title>
+        <Card.Body className="shiftTop">
+          <Card.Title>{"Time Left " + timeLeft}</Card.Title>
         </Card.Body>
       </Card>
 
       <div className="forminput">
         <button
           value="Story Mode"
-          className="fButton"
-          onClick={() => emitReq("/control")}
-          // style={ emitReq ?  'border: 1px solid black': 'border: 1px solid grey' } 
-
+          className={
+            currentState === "storyMode" ? "fButtonActivated" : "fButton"
+          }
+          onClick={() => emitReq("storyMode")}
+          // style={ emitReq ?  'border: 1px solid black': 'border: 1px solid grey' }
         >
           Story<br></br> Mode
         </button>
-      
-        <button 
-        value="Interactive" 
-        class="fButton" 
-        onClick={() => navigate("/control/interactive")}>
+
+        <button
+          value="Interactive"
+          class="fButton"
+          onClick={() => navigate("/control/interactive")}
+        >
           Interactive
         </button>
       </div>
@@ -72,11 +74,7 @@ function FrontPage(props) {
         >
           Beats
         </button>
-      
       </div>
-
-      
-    
     </>
   );
 }

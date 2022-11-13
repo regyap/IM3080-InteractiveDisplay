@@ -7,7 +7,7 @@
   display: flex;
   flex-direction: row;
   justify-content: space-around;
-  margin:0px 10px;
+  margin: 0px 10px;
 
   /* padding-left: 13%;
   padding-right: 13%; */
@@ -18,7 +18,7 @@
     width:140px; */
   /* padding: 6.4px 15px;
   padding: 100px 100px; */
-  margin:2px 4%;
+  margin: 2px 4%;
   font-size: 16px;
   border-radius: 5px;
 
@@ -31,15 +31,8 @@
   background-image: none;
   background-color: transparent;
   color: rgb(255, 255, 255);
-  text-shadow:
-  0 0 7px #fff,
-  0 0 10px #fff,
-  0 0 21px #fff,
-  0 0 42px #0fa,
-  0 0 82px #0fa,
-  0 0 92px #0fa,
-  0 0 102px #0fa,
-  0 0 151px #0fa;
+  text-shadow: 0 0 7px #fff, 0 0 10px #fff, 0 0 21px #fff, 0 0 42px #0fa,
+    0 0 82px #0fa, 0 0 92px #0fa, 0 0 102px #0fa, 0 0 151px #0fa;
   border: 1px solid grey;
   box-shadow: 0 2px 0 rgb(0 0 0 / 2%);
   cursor: pointer;
@@ -74,30 +67,60 @@
     /* outer left magenta */ 10px 0 80px #0ff; /* outer right cyan */
 }
 
-.card{
+.fButtonActivated {
+  margin: 2px 4%;
+  font-size: 16px;
+  border-radius: 5px;
+  line-height: 1.5715;
+  position: relative;
+  display: inline-block;
+  font-weight: 400;
+  white-space: nowrap;
+  text-align: center;
+  background-image: none;
+  background-color: transparent;
+  color: rgb(255, 255, 255);
+  text-shadow: 0 0 7px #fff, 0 0 10px #fff, 0 0 21px #fff, 0 0 42px #0fa,
+    0 0 82px #0fa, 0 0 92px #0fa, 0 0 102px #0fa, 0 0 151px #0fa;
+  border: 1px solid grey;
+  box-shadow: 0 2px 0 rgb(0 0 0 / 2%);
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+  width: 280px;
+  height: 280px;
+  border-radius: 50%;
+  box-shadow: inset 0 0 50px #fff, /* inner white */ inset 20px 0 80px #f0f;
+  padding-left: 115px;
+  padding-right: 120px;
+  color: rgb(104, 191, 175);
+  transition: 0.6s ease-in-out;
+  box-shadow: inset 0 0 50px #fff,
+    /* inner white */ inset 20px 0 80px rgb(189, 20, 20),
+    /* inner left magenta short */ inset -20px 0 80px #0ff,
+    /* inner right cyan short */ inset 20px 0 300px rgb(189, 20, 20),
+    /* inner left magenta broad */ inset -20px 0 300px #0ff,
+    /* inner right cyan broad */ 0 0 50px #fff,
+    /* outer white */ -10px 0 80px rgb(189, 20, 20),
+    /* outer left magenta */ 10px 0 80px #0ff; /* outer right cyan */
+  -webkit-animation: movebounce 5s linear infinite;
+  animation: movebounce 5s linear infinite;
+}
+
+.card {
   width: 55un em;
-  color:white;
-  border:none;
+  color: white;
+  border: none;
   /* background: radial-gradient(purple, purple,rgb(133, 133, 233)); */
-  text-shadow:
-      0 0 7px #fff,
-      0 0 10px #fff,
-      0 0 21px #fff,
-      0 0 42px #0fa,
-      0 0 82px #0fa,
-      0 0 92px #0fa,
-      0 0 102px #0fa,
-      0 0 151px #0fa;
-  box-shadow: inset 0 0 50px black, 
-  /* inner white */ inset 20px 0 80px #f0f,
+  text-shadow: 0 0 7px #fff, 0 0 10px #fff, 0 0 21px #fff, 0 0 42px #0fa,
+    0 0 82px #0fa, 0 0 92px #0fa, 0 0 102px #0fa, 0 0 151px #0fa;
+  box-shadow: inset 0 0 50px black, /* inner white */ inset 20px 0 80px #f0f,
     /* inner left magenta short */ inset -20px 0 80px black,
     /* inner right cyan short */ inset 20px 0 300px rgb(255, 176, 255),
     /* inner left magenta broad */ inset -20px 0 300px rgb(129, 17, 129),
     /* inner right cyan broad */ 0 0 50px purple,
     /* outer white */ -10px 0 80px black,
     /* outer left magenta */ 10px 0 80px black; /* outer right cyan */
-    background-color: transparent;
-
+  background-color: transparent;
 }
 .fButton {
   -webkit-animation: movebounce 5s linear infinite;
@@ -134,32 +157,30 @@
   }
 }
 
-@media (min-width: 561px) and (max-width: 888px){
-  html,body{
+@media (min-width: 561px) and (max-width: 888px) {
+  html,
+  body {
     overflow-x: hidden;
     overflow-y: auto;
   }
-  .card .shiftTop{
-    margin:0px;
-    padding-bottom:100px;
+  .card .shiftTop {
+    margin: 0px;
+    padding-bottom: 100px;
     /* margin:2% 4%; */
-    
-    padding:0px;
-    padding:2% 4%;
-    
-    text-align:center;
+
+    padding: 0px;
+    padding: 2% 4%;
+
+    text-align: center;
 
     width: 40%;
-    font-size:13px;
-
-
+    font-size: 13px;
   }
   .fButton {
-  
-    margin:2px 4%;
+    margin: 2px 4%;
     font-size: 14px;
     border-radius: 5px;
-    
+
     line-height: 1.5715;
     position: relative;
     display: inline-block;
@@ -173,7 +194,7 @@
     box-shadow: 0 2px 0 rgb(0 0 0 / 2%);
     cursor: pointer;
     transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
-  
+
     width: 220px;
     height: 220px;
     border-radius: 50%;
@@ -184,51 +205,50 @@
       /* inner right cyan broad */ 0 0 50px #fff,
       /* outer white */ -10px 0 80px #f0f,
       /* outer left magenta */ 10px 0 80px #0ff; /* outer right cyan */
-  
+
     padding-left: 90px;
     padding-right: 100px;
   }
 }
-@media (min-width: 50px) and (max-width: 560px){
-  html,body{
+@media (min-width: 50px) and (max-width: 560px) {
+  html,
+  body {
     overflow-x: hidden;
     overflow-y: auto;
-    height:100%;
-
+    height: 100%;
   }
   .forminput {
     /* background-color: black; */
     display: flex;
     flex-direction: column;
     justify-content: space-around;
-    margin:0px 10px;
+    margin: 0px 10px;
   }
-  .card{
-    text-align:center;
+  .card {
+    text-align: center;
   }
-  .card .shiftTop{
-    margin:0px;
-    padding-bottom:100px;
+  .card .shiftTop {
+    margin: 0px;
+    padding-bottom: 100px;
     /* margin:2% 4%; */
-    
-    padding:0px;
-    padding:2% 4%;
-    
-    text-align:center;
 
-    position:relative;
-    left:200px;
+    padding: 0px;
+    padding: 2% 4%;
+
+    text-align: center;
+
+    position: relative;
+    left: 200px;
 
     width: 400px;
-    height:60px;
-    font-size:10px;
+    height: 60px;
+    font-size: 10px;
   }
   .fButton {
-  
-    margin:2px 4%;
+    margin: 2px 4%;
     font-size: 14px;
     border-radius: 1px;
-    
+
     line-height: 1.5715;
     position: relative;
     display: inline-block;
@@ -242,7 +262,7 @@
     box-shadow: 0 2px 0 rgb(0 0 0 / 2%);
     cursor: pointer;
     transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
-  
+
     width: 200px;
     height: 200px;
     border-radius: 50%;
@@ -253,7 +273,7 @@
       /* inner right cyan broad */ 0 0 50px #fff,
       /* outer white */ -10px 0 80px #f0f,
       /* outer left magenta */ 10px 0 80px #0ff; /* outer right cyan */
-  
+
     padding-left: 55px;
     padding-right: 60px;
   }

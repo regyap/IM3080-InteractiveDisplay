@@ -2,12 +2,15 @@ import React, { useState, useEffect } from "react";
 import socketOBJ from "../Socket/SocketIO.js";
 import Card from "react-bootstrap/Card";
 import { Slider } from "@mui/material";
+import Button from "react-bootstrap/Button";
+import { useNavigate } from "react-router-dom";
 import "./RGB.css";
 
 function RGB() {
   const [redValue, setRedValue] = useState(0);
   const [greenValue, setGreenValue] = useState(0);
   const [blueValue, setBlueValue] = useState(0);
+  const navigate = useNavigate();
 
   function changeVal(colour, value) {
     const data = {
@@ -28,6 +31,11 @@ function RGB() {
     }
     socketOBJ.emit("buttonPressed", data);
     console.log(data);
+  }
+
+  function onBack(e) {
+    e.preventDefault();
+    navigate("/control");
   }
 
   return (
@@ -82,6 +90,14 @@ function RGB() {
           <label className="vlabel">{blueValue}</label>
         </div>
       </Card>
+      <Button
+        variant="danger"
+        className="float-end"
+        onClick={onBack}
+        style={{ marginTop: "15px" }}
+      >
+        Back
+      </Button>
     </>
   );
 }
