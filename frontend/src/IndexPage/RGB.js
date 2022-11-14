@@ -10,11 +10,12 @@ function RGB() {
   const [redValue, setRedValue] = useState(0);
   const [greenValue, setGreenValue] = useState(0);
   const [blueValue, setBlueValue] = useState(0);
+  const [beats, setBeats] = useState("bread");
   const navigate = useNavigate();
 
   function changeVal(colour, value) {
     const data = {
-      mode: "rgb",
+      mode: beats,
       red: redValue,
       green: greenValue,
       blue: blueValue,
@@ -33,6 +34,18 @@ function RGB() {
     console.log(data);
   }
 
+  function emitReq(button) {
+    const data = {
+      mode: button,
+      red: redValue,
+      green: greenValue,
+      blue: blueValue,
+    };
+    setBeats(button);
+    socketOBJ.emit("buttonPressed", data);
+    console.log(data);
+  }
+
   function onBack(e) {
     e.preventDefault();
     navigate("/control");
@@ -40,11 +53,29 @@ function RGB() {
 
   return (
     <>
+      <div className="forminput">
+        <button
+          value="Bread"
+          className={beats === "bread" ? "fButtonActivated" : "fButton"}
+          onClick={() => emitReq("bread")}
+        >
+          Bread
+        </button>
+
+        <button
+          value="Sunflower"
+          className={beats === "sunflower" ? "fButtonActivated" : "fButton"}
+          onClick={() => emitReq("sunflower")}
+        >
+          Sunflower
+        </button>
+      </div>
       <Card
         style={{
           width: "50rem",
           boxShadow:
             "inset 0 0 50px #fff,inset 20px 0 80px #f0f,inset -20px 0 80px #0ff,inset 20px 0 300px #f0f,inset -20px 0 300px #0ff",
+          marginTop: "20px",
         }}
       >
         {/* <Card.Body>
