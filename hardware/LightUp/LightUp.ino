@@ -116,9 +116,9 @@ bool SensorIsTriggered(int trigPin, int echoPin) {
 
 void TurnOn(int pin) {
   strip.setPin(pin);
+  strip.setBrightness(brightness);
   strip.fill(color);
   strip.show();
-
 }
 
 void TurnOff(int pin) {

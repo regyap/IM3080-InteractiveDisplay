@@ -1206,11 +1206,11 @@ void storymode(long elapsedTime) {
   } else if (storymodeTime < 83000) { //83000
     rain_storymode();
 
-  } else if (storymodeTime < 119000) {  //119000
+  } else if (storymodeTime < 98000) {  //98000
     // sunshine
     sunshine_storymode();
 
-  } else if (storymodeTime < 155000) {
+  } else if (storymodeTime < 134000) {
     // rainbow
     rainbow_storymode();
   } else {
