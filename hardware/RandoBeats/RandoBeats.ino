@@ -48,8 +48,8 @@ long test[] = {1000, 2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000};
 int LED_COUNT = 60;
 unsigned long lastTime = 0;
 int brightness = 200;
-int ledPinMin = 22;
-int ledPinMax = 41;
+int ledPinMin = 27;
+int ledPinMax = 51;
 int duration = 1000;
 
 Adafruit_NeoPixel strip(LED_COUNT, ledPinMin, NEO_GRB + NEO_KHZ800);
@@ -97,7 +97,7 @@ void raise(long elapsedTime, long beat[]) {
     //Checking for duplicate rand num
 
     if (pushNum == popNum) {
-
+      Serial.println("here");
     } else if (pushNum > popNum) { //Handle normal case
       for (int j = popNum; j < pushNum; j++) {
         if (queue[j] == randNumber) {
