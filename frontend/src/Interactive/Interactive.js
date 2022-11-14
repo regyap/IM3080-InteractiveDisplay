@@ -11,6 +11,7 @@ function Interactive() {
 
   function emitReq(button) {
     const data = { mode: button };
+    console.log(data);
     setCurrentState(button);
     socketOBJ.emit("buttonPressed", data);
   }
