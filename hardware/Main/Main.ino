@@ -35,18 +35,19 @@
 #define LED_COUNT 50
 
 //Ultrasonic sensor pins [FILL IN PIN NO!!!]
-#define trigPin1 5
-#define trigPin2 8
-#define trigPin3 3
-#define trigPin4 10
-#define trigPin5 14
-#define trigPin6 12
-#define echoPin1 4
-#define echoPin2 7
-#define echoPin3 2
-#define echoPin4 9
-#define echoPin5 13
-#define echoPin6 11
+#define trigPin1 6
+#define trigPin2 9
+#define trigPin3 11
+#define trigPin4 13
+#define trigPin5 24
+#define trigPin6 53
+
+#define echoPin1 5
+#define echoPin2 8
+#define echoPin3 10
+#define echoPin4 12
+#define echoPin5 23
+#define echoPin6 52
 
 // 5 6 8 9
 
@@ -135,8 +136,8 @@ void setup() {
 }
 
 // from rasberry pi to arduino
-JSONVar payload;
-String mode;
+JSONVar payload = JSON.parse("{mode: 'bread', red: 255, green: 0, blue: 0}");
+String mode = "ripple";
 
 void loop() {
   if (Serial.available() > 0) {
@@ -149,15 +150,16 @@ void loop() {
 
   if (mode == "bread") {
     uint32_t color = strip.Color(int(payload["red"]), int(payload["green"]), int(payload["blue"]));
-    breadColor(elapsedTime, color);
+    //    breadColor(elapsedTime, color);
 
-    //    bread(elapsedTime);
+    Serial.println(color);
+    bread(elapsedTime);
   }
   else if (mode == "sunflower") {
     uint32_t color = strip.Color(int(payload["red"]), int(payload["green"]), int(payload["blue"]));
-    sunflowerColor(elapsedTime, color);
+    //    sunflowerColor(elapsedTime, color);
 
-    //    sunflower(elapsedTime);
+    sunflower(elapsedTime);
   }
   else if (mode == "ripple") {
     // ripple with sensor
@@ -191,7 +193,6 @@ void loop() {
         DirectionRipple6(elapsedTime);
       }
     }
-
   }
   else if (mode == "centerRipple") {
     // centerripple only
@@ -228,7 +229,7 @@ void loop() {
     // --- [ just a placeholder ] ---
     for (int i = 22; i <= 51; i++) {
       strip.setPin(i);
-      Serial.println(String(i));
+      //      Serial.println(String(i));
       rainbow(elapsedTime);
     }
   }
@@ -265,7 +266,7 @@ void bread(long elapsedTime) {
         pixel++;
         setAllTubes_Beats(strip.Color(255, 0, 255), pixel);
         pixel++;
-        Serial.println("===============");
+        //        Serial.println("===============");
       }
       else {
         setAllTubes_Beats(strip.Color(0, 0, 0), pixel);
@@ -311,7 +312,7 @@ void breadColor(long elapsedTime, uint32_t color) {
   if (ledTime >= breadBeat[beatIndex] - 400) {
     raiseTime = ledTime - breadBeat[beatIndex];
     if (raiseTime <= 1000) {
-      if (raiseTime < 800) {
+      if (raiseTime < 700) {
         setAllTubes_Beats(color, pixel);
         pixel++;
         setAllTubes_Beats(color, pixel);
@@ -322,7 +323,7 @@ void breadColor(long elapsedTime, uint32_t color) {
         pixel++;
         setAllTubes_Beats(color, pixel);
         pixel++;
-        Serial.println("===============");
+        //        Serial.println("===============");
       }
       else {
         setAllTubes_Beats(strip.Color(0, 0, 0), pixel);
@@ -387,7 +388,7 @@ void sunflower(long elapsedTime) {
         pixel++;
         setAllTubes_Beats(strip.Color(255, 0, 255), pixel);
         pixel++;
-        Serial.println("===============");
+        //        Serial.println("===============");
       }
       else {
         setAllTubes_Beats(strip.Color(0, 0, 0), pixel);
@@ -433,7 +434,7 @@ void sunflowerColor(long elapsedTime, uint32_t color) {
   if (ledTime >= sunflowerBeat[beatIndex] - 400) {
     raiseTime = ledTime - sunflowerBeat[beatIndex];
     if (raiseTime <= 1000) {
-      if (raiseTime < 800) {
+      if (raiseTime < 700) {
         setAllTubes_Beats(color, pixel);
         pixel++;
         setAllTubes_Beats(color, pixel);
@@ -444,7 +445,7 @@ void sunflowerColor(long elapsedTime, uint32_t color) {
         pixel++;
         setAllTubes_Beats(color, pixel);
         pixel++;
-        Serial.println("===============");
+        //        Serial.println("===============");
       }
       else {
         setAllTubes_Beats(strip.Color(0, 0, 0), pixel);
@@ -528,83 +529,77 @@ void CenterRipple(long elapsedTime) {
   static long ledTime = 0;
   ledTime += elapsedTime;
   static int counter = 0;
-  Serial.println(counter);
-  if (counter % 5 == 0) {
+  //  Serial.println(counter);
+  if (ledTime < timeInterval) {
+    brightness = 255; //Brightness decreases for each ripple wave
+    color = strip.Color(0, 0, 255); //Color changes for each ripple wave
+    TurnOn(LED_PIN13);
+  };
+  if (ledTime >= timeInterval && ledTime < timeInterval * 2) {
+    brightness = 235;
+    color = strip.Color(0, 50, 235);
+    TurnOff(LED_PIN13);
 
-    if (ledTime < timeInterval) {
-      brightness = 255; //Brightness decreases for each ripple wave
-      color = strip.Color(0, 0, 255); //Color changes for each ripple wave
-      TurnOn(LED_PIN13);
-    };
-    if (ledTime >= timeInterval && ledTime < timeInterval * 2) {
-      brightness = 235;
-      color = strip.Color(0, 50, 235);
-      TurnOff(LED_PIN13);
+    TurnOn(LED_PIN8);
+    TurnOn(LED_PIN9);
+    TurnOn(LED_PIN12);
+    TurnOn(LED_PIN14);
+    TurnOn(LED_PIN17);
+    TurnOn(LED_PIN18);
+  };
+  if (ledTime >= timeInterval * 2 && ledTime < timeInterval * 3) {
+    brightness = 215;
+    color = strip.Color(0, 100, 215);
+    TurnOff(LED_PIN8);
+    TurnOff(LED_PIN9);
+    TurnOff(LED_PIN12);
+    TurnOff(LED_PIN14);
+    TurnOff(LED_PIN17);
+    TurnOff(LED_PIN18);
 
-      TurnOn(LED_PIN8);
-      TurnOn(LED_PIN9);
-      TurnOn(LED_PIN12);
-      TurnOn(LED_PIN14);
-      TurnOn(LED_PIN17);
-      TurnOn(LED_PIN18);
-    };
-    if (ledTime >= timeInterval * 2 && ledTime < timeInterval * 3) {
-      brightness = 215;
-      color = strip.Color(0, 100, 215);
-      TurnOff(LED_PIN8);
-      TurnOff(LED_PIN9);
-      TurnOff(LED_PIN12);
-      TurnOff(LED_PIN14);
-      TurnOff(LED_PIN17);
-      TurnOff(LED_PIN18);
+    TurnOn(LED_PIN3);
+    TurnOn(LED_PIN4);
+    TurnOn(LED_PIN5);
+    TurnOn(LED_PIN7);
+    TurnOn(LED_PIN10);
+    TurnOn(LED_PIN11);
+    TurnOn(LED_PIN15);
+    TurnOn(LED_PIN16);
+    TurnOn(LED_PIN19);
+    TurnOn(LED_PIN21);
+    TurnOn(LED_PIN22);
+    TurnOn(LED_PIN23);
+  };
+  if (ledTime >= timeInterval * 3 && ledTime < timeInterval * 4) {
+    brightness = 195;
+    color = strip.Color(0, 150, 195);
+    TurnOff(LED_PIN3);
+    TurnOff(LED_PIN4);
+    TurnOff(LED_PIN5);
+    TurnOff(LED_PIN7);
+    TurnOff(LED_PIN10);
+    TurnOff(LED_PIN11);
+    TurnOff(LED_PIN15);
+    TurnOff(LED_PIN16);
+    TurnOff(LED_PIN19);
+    TurnOff(LED_PIN21);
+    TurnOff(LED_PIN22);
+    TurnOff(LED_PIN23);
 
-      TurnOn(LED_PIN3);
-      TurnOn(LED_PIN4);
-      TurnOn(LED_PIN5);
-      TurnOn(LED_PIN7);
-      TurnOn(LED_PIN10);
-      TurnOn(LED_PIN11);
-      TurnOn(LED_PIN15);
-      TurnOn(LED_PIN16);
-      TurnOn(LED_PIN19);
-      TurnOn(LED_PIN21);
-      TurnOn(LED_PIN22);
-      TurnOn(LED_PIN23);
-    };
-    if (ledTime >= timeInterval * 3 && ledTime < timeInterval * 4) {
-      brightness = 195;
-      color = strip.Color(0, 150, 195);
-      TurnOff(LED_PIN3);
-      TurnOff(LED_PIN4);
-      TurnOff(LED_PIN5);
-      TurnOff(LED_PIN7);
-      TurnOff(LED_PIN10);
-      TurnOff(LED_PIN11);
-      TurnOff(LED_PIN15);
-      TurnOff(LED_PIN16);
-      TurnOff(LED_PIN19);
-      TurnOff(LED_PIN21);
-      TurnOff(LED_PIN22);
-      TurnOff(LED_PIN23);
-
-      TurnOn(LED_PIN1);
-      TurnOn(LED_PIN2);
-      TurnOn(LED_PIN6);
-      TurnOn(LED_PIN20);
-      TurnOn(LED_PIN24);
-      TurnOn(LED_PIN25);
-    };
-    if (ledTime >= timeInterval * 4) {
-      TurnOff(LED_PIN1);
-      TurnOff(LED_PIN2);
-      TurnOff(LED_PIN6);
-      TurnOff(LED_PIN20);
-      TurnOff(LED_PIN24);
-      TurnOff(LED_PIN25);
-
-      ledTime -= timeInterval * 4;
-      counter++;
-    }
+    TurnOn(LED_PIN1);
+    TurnOn(LED_PIN2);
+    TurnOn(LED_PIN6);
+    TurnOn(LED_PIN20);
+    TurnOn(LED_PIN24);
+    TurnOn(LED_PIN25);
+  };
+  if (ledTime >= timeInterval * 4) {
+    TurnOff(LED_PIN1);
+    TurnOff(LED_PIN2);
+    TurnOff(LED_PIN6);
+    TurnOff(LED_PIN20);
+    TurnOff(LED_PIN24);
+    TurnOff(LED_PIN25);
   }
 }
 
@@ -1003,98 +998,94 @@ void DirectionRipple5(long elapsedTime) {
   ledTime += elapsedTime;
 
   static int counter = 0;
-  Serial.println(counter);
-  if (counter % 5 == 0) {
+  //  Serial.println(counter);
+  if (ledTime <= timeInterval) {
+    brightness = 255;
+    color = strip.Color(0, 0, 255);
+    TurnOn(LED_PIN24);
+  };
+  if (ledTime >= timeInterval && ledTime < timeInterval * 2) {
+    brightness = 240;
+    color = strip.Color(0, 40, 235);
+    TurnOff(LED_PIN24);
 
-    if (ledTime <= timeInterval) {
-      brightness = 255;
-      color = strip.Color(0, 0, 255);
-      TurnOn(LED_PIN24);
-    };
-    if (ledTime >= timeInterval && ledTime < timeInterval * 2) {
-      brightness = 240;
-      color = strip.Color(0, 40, 235);
-      TurnOff(LED_PIN24);
+    TurnOn(LED_PIN15);
+    TurnOn(LED_PIN19);
+    TurnOn(LED_PIN23);
+    TurnOn(LED_PIN25);
+  };
+  if (ledTime >= timeInterval * 2 && ledTime < timeInterval * 3) {
+    brightness = 225;
+    color = strip.Color(0, 80, 215);
+    TurnOff(LED_PIN15);
+    TurnOff(LED_PIN19);
+    TurnOff(LED_PIN23);
+    TurnOff(LED_PIN25);
 
-      TurnOn(LED_PIN15);
-      TurnOn(LED_PIN19);
-      TurnOn(LED_PIN23);
-      TurnOn(LED_PIN25);
-    };
-    if (ledTime >= timeInterval * 2 && ledTime < timeInterval * 3) {
-      brightness = 225;
-      color = strip.Color(0, 80, 215);
-      TurnOff(LED_PIN15);
-      TurnOff(LED_PIN19);
-      TurnOff(LED_PIN23);
-      TurnOff(LED_PIN25);
+    TurnOn(LED_PIN6);
+    TurnOn(LED_PIN10);
+    TurnOn(LED_PIN14);
+    TurnOn(LED_PIN18);
+    TurnOn(LED_PIN22);
+  };
+  if (ledTime >= timeInterval * 3 && ledTime < timeInterval * 4) {
+    brightness = 210;
+    color = strip.Color(0, 120, 195);
+    TurnOff(LED_PIN6);
+    TurnOff(LED_PIN10);
+    TurnOff(LED_PIN14);
+    TurnOff(LED_PIN18);
+    TurnOff(LED_PIN22);
 
-      TurnOn(LED_PIN6);
-      TurnOn(LED_PIN10);
-      TurnOn(LED_PIN14);
-      TurnOn(LED_PIN18);
-      TurnOn(LED_PIN22);
-    };
-    if (ledTime >= timeInterval * 3 && ledTime < timeInterval * 4) {
-      brightness = 210;
-      color = strip.Color(0, 120, 195);
-      TurnOff(LED_PIN6);
-      TurnOff(LED_PIN10);
-      TurnOff(LED_PIN14);
-      TurnOff(LED_PIN18);
-      TurnOff(LED_PIN22);
+    TurnOn(LED_PIN5);
+    TurnOn(LED_PIN9);
+    TurnOn(LED_PIN13);
+    TurnOn(LED_PIN17);
+    TurnOn(LED_PIN21);
+  };
+  if (ledTime >= timeInterval * 4 && ledTime < timeInterval * 5) {
+    brightness = 195;
+    color = strip.Color(0, 160, 175);
+    TurnOff(LED_PIN5);
+    TurnOff(LED_PIN9);
+    TurnOff(LED_PIN13);
+    TurnOff(LED_PIN17);
+    TurnOff(LED_PIN21);
 
-      TurnOn(LED_PIN5);
-      TurnOn(LED_PIN9);
-      TurnOn(LED_PIN13);
-      TurnOn(LED_PIN17);
-      TurnOn(LED_PIN21);
-    };
-    if (ledTime >= timeInterval * 4 && ledTime < timeInterval * 5) {
-      brightness = 195;
-      color = strip.Color(0, 160, 175);
-      TurnOff(LED_PIN5);
-      TurnOff(LED_PIN9);
-      TurnOff(LED_PIN13);
-      TurnOff(LED_PIN17);
-      TurnOff(LED_PIN21);
+    TurnOn(LED_PIN4);
+    TurnOn(LED_PIN8);
+    TurnOn(LED_PIN12);
+    TurnOn(LED_PIN16);
+    TurnOn(LED_PIN20);
+  };
+  if (ledTime >= timeInterval * 5 && ledTime < timeInterval * 6) {
+    brightness = 180;
+    color = strip.Color(0, 200, 155);
+    TurnOff(LED_PIN4);
+    TurnOff(LED_PIN8);
+    TurnOff(LED_PIN12);
+    TurnOff(LED_PIN16);
+    TurnOff(LED_PIN20);
 
-      TurnOn(LED_PIN4);
-      TurnOn(LED_PIN8);
-      TurnOn(LED_PIN12);
-      TurnOn(LED_PIN16);
-      TurnOn(LED_PIN20);
-    };
-    if (ledTime >= timeInterval * 5 && ledTime < timeInterval * 6) {
-      brightness = 180;
-      color = strip.Color(0, 200, 155);
-      TurnOff(LED_PIN4);
-      TurnOff(LED_PIN8);
-      TurnOff(LED_PIN12);
-      TurnOff(LED_PIN16);
-      TurnOff(LED_PIN20);
+    TurnOn(LED_PIN1);
+    TurnOn(LED_PIN3);
+    TurnOn(LED_PIN7);
+    TurnOn(LED_PIN11);
+  };
+  if (ledTime >= timeInterval * 6 && ledTime < timeInterval * 7) {
+    brightness = 165;
+    color = strip.Color(0, 240, 135);
+    TurnOff(LED_PIN1);
+    TurnOff(LED_PIN3);
+    TurnOff(LED_PIN7);
+    TurnOff(LED_PIN11);
 
-      TurnOn(LED_PIN1);
-      TurnOn(LED_PIN3);
-      TurnOn(LED_PIN7);
-      TurnOn(LED_PIN11);
-    };
-    if (ledTime >= timeInterval * 6 && ledTime < timeInterval * 7) {
-      brightness = 165;
-      color = strip.Color(0, 240, 135);
-      TurnOff(LED_PIN1);
-      TurnOff(LED_PIN3);
-      TurnOff(LED_PIN7);
-      TurnOff(LED_PIN11);
+    TurnOn(LED_PIN2);
+  };
+  if (ledTime >= timeInterval * 7) {
+    TurnOff(LED_PIN2);
 
-      TurnOn(LED_PIN2);
-    };
-    if (ledTime >= timeInterval * 7) {
-      TurnOff(LED_PIN2);
-
-      ledTime -= timeInterval * 7;
-      counter++;
-    }
+    ledTime -= timeInterval * 7;
   }
 }
 
@@ -1595,12 +1586,12 @@ void setAllTubes_Beats(uint32_t color, long pixel) {
       strip3.setPin(i);
       int pi = pixel + 8;
       strip3.setPixelColor(pi, color);
-      Serial.println(pi);
+      //      Serial.println(pi);
       strip3.show();
       continue;
     } else {
       strip.setPin(i);
-      Serial.println("i" + String(pixel));
+      //      Serial.println("i" + String(pixel));
       strip.setPixelColor(pixel, color);
       strip.show();
     }
@@ -1632,7 +1623,7 @@ void rainbow(long elapsedTime) {
       j = 0;
     }
     strip.fill(Wheel((i + j)));
-    Serial.println(String(i + j));
+    //    Serial.println(String(i + j));
     strip.show();
 
     RainbowTime -= 300;
