@@ -34,24 +34,24 @@
 #define LED_COUNT 50
 
 //Ultrasonic sensor pins [FILL IN PIN NO!!!]
-#define trigPin1 9
-#define trigPin2 6
-#define trigPin3 11
+#define trigPin1 6
+#define trigPin2 11
+#define trigPin3 9
 #define trigPin4 13
-#define trigPin5 24
-#define trigPin6 53
-#define echoPin1 8
-#define echoPin2 5
-#define echoPin3 10
+#define trigPin5 53
+#define trigPin6 24
+#define echoPin1 5
+#define echoPin2 10
+#define echoPin3 8
 #define echoPin4 12
-#define echoPin5 23
-#define echoPin6 52
+#define echoPin5 52
+#define echoPin6 23
 
 Adafruit_NeoPixel strip(LED_COUNT, LED_PIN1, NEO_BRG + NEO_KHZ800);
 
 int brightness = 250;
 uint32_t color = strip.Color(255, 0, 0);
-int timeInterval = 300;
+int timeInterval = 600;
 
 //for sensors
 int maxDistance = 15;
@@ -123,8 +123,18 @@ void TurnOn(int pin) {
 
 void TurnOff(int pin) {
   strip.setPin(pin);
-  strip.clear();
+  strip.fill(strip.Color(0, 0, 0));
+  strip.setBrightness(150);
   strip.show();
+}
+
+void TurnOffAll() {
+  for (int i = 0; i <= 55; i++) {
+    strip.setPin(i);
+    strip.fill(strip.Color(0, 0, 0));
+    strip.setBrightness(10);
+    strip.show();
+  }
 }
 
 
@@ -132,17 +142,18 @@ void CenterRipple(long elapsedTime) {
   static long ledTime = 0;
   ledTime += elapsedTime;
   static int counter = 0;
-  Serial.println(counter);
-  if (counter % 5 == 0) {
+  Serial.println("Center ripple starts");
 
     if (ledTime < timeInterval) {
+       Serial.println("Center ripple 1");
       brightness = 255; //Brightness decreases for each ripple wave
-      color = strip.Color(127, 0, 0); //Color changes for each ripple wave
+      color = strip.Color(0, 0, 255); //Color changes for each ripple wave
       TurnOn(LED_PIN13);
     };
     if (ledTime >= timeInterval && ledTime < timeInterval * 2) {
+      Serial.println("Center ripple 2");
       brightness = 235;
-      color = strip.Color(127, 0, 0);
+      color = strip.Color(0, 50, 235);
       TurnOff(LED_PIN13);
 
       TurnOn(LED_PIN8);
@@ -153,8 +164,9 @@ void CenterRipple(long elapsedTime) {
       TurnOn(LED_PIN18);
     };
     if (ledTime >= timeInterval * 2 && ledTime < timeInterval * 3) {
+      Serial.println("Center ripple 3");
       brightness = 215;
-      color = strip.Color(127, 0, 0);
+      color = strip.Color(0, 100, 215);
       TurnOff(LED_PIN8);
       TurnOff(LED_PIN9);
       TurnOff(LED_PIN12);
@@ -177,7 +189,7 @@ void CenterRipple(long elapsedTime) {
     };
     if (ledTime >= timeInterval * 3 && ledTime < timeInterval * 4) {
       brightness = 195;
-      color = strip.Color(127, 0, 0);
+      color = strip.Color(0, 150, 195);
       TurnOff(LED_PIN3);
       TurnOff(LED_PIN4);
       TurnOff(LED_PIN5);
@@ -207,11 +219,7 @@ void CenterRipple(long elapsedTime) {
       TurnOff(LED_PIN25);
 
       ledTime -= timeInterval * 4;
-      counter++;
     }
-
-  }
-
 
 
 
@@ -224,6 +232,7 @@ void DirectionRipple1(long elapsedTime) {
   if (ledTime <= timeInterval) {
     brightness = 255;
     color = strip.Color(127, 0, 0); //Color changes for each ripple wave
+    TurnOff(LED_PIN25);
     TurnOn(LED_PIN1);
   };
   if (ledTime >= timeInterval && ledTime < timeInterval * 2) {
@@ -303,12 +312,14 @@ void DirectionRipple1(long elapsedTime) {
     TurnOff(LED_PIN24);
 
     TurnOn(LED_PIN25);
-  };
-  if (ledTime >= timeInterval * 7) {
-    TurnOff(LED_PIN25);
 
     ledTime -= timeInterval * 7;
-  }
+  };
+//  if (ledTime >= timeInterval * 7) {
+//    TurnOff(LED_PIN25);
+//
+//    ledTime -= timeInterval * 7;
+//  }
 }
 
 void DirectionRipple2(long elapsedTime) {
@@ -794,8 +805,7 @@ void loop() {
 
   //  CenterRipple(elapsedTime);
 
-  Serial.println("HI");
-
+  //Serial.println("HI");
 
 
   bool sensor1Triggered = SensorIsTriggered(trigPin1, echoPin1);
@@ -805,7 +815,12 @@ void loop() {
   bool sensor5Triggered = SensorIsTriggered(trigPin5, echoPin5);
   bool sensor6Triggered = SensorIsTriggered(trigPin6, echoPin6);
 
+    Serial.print("Number Triggered: ");
+    Serial.println(triggeredNo);
+
     if (triggeredNo > 1) {
+//      Serial.println("Number Triggered:");
+//      Serial.println(triggeredNo);
       CenterRipple(elapsedTime);
     }else if (triggeredNo == 1){
       if (SensorIsTriggered(trigPin1, echoPin1)){
@@ -826,9 +841,34 @@ void loop() {
       if (SensorIsTriggered(trigPin6, echoPin6)){
         DirectionRipple6(elapsedTime);
       }
+    } else if (triggeredNo == 0) {
+      TurnOff(LED_PIN1);
+      TurnOff(LED_PIN8);
+      TurnOff(LED_PIN9);
+      TurnOff(LED_PIN12);
+      TurnOff(LED_PIN14);
+      TurnOff(LED_PIN17);
+      TurnOff(LED_PIN18);
+      TurnOff(LED_PIN3);
+      TurnOff(LED_PIN4);
+      TurnOff(LED_PIN5);
+      TurnOff(LED_PIN7);
+      TurnOff(LED_PIN10);
+      TurnOff(LED_PIN11);
+      TurnOff(LED_PIN15);
+      TurnOff(LED_PIN16);
+      TurnOff(LED_PIN19);
+      TurnOff(LED_PIN21);
+      TurnOff(LED_PIN22);
+      TurnOff(LED_PIN23);
+      TurnOff(LED_PIN13);
+      TurnOff(LED_PIN2);
+      TurnOff(LED_PIN6);
+      TurnOff(LED_PIN20);
+      TurnOff(LED_PIN24);
+      TurnOff(LED_PIN25);
     }
   
-
   
     triggeredNo = 0;
 }
