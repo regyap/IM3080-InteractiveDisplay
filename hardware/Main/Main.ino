@@ -35,21 +35,19 @@
 #define LED_COUNT 50
 
 //Ultrasonic sensor pins [FILL IN PIN NO!!!]
-#define trigPin1 6
-#define trigPin2 9
+#define trigPin1 9
+#define trigPin2 6
 #define trigPin3 11
 #define trigPin4 13
 #define trigPin5 24
 #define trigPin6 53
 
-#define echoPin1 5
-#define echoPin2 8
+#define echoPin1 8
+#define echoPin2 5
 #define echoPin3 10
 #define echoPin4 12
 #define echoPin5 23
 #define echoPin6 52
-
-// 5 6 8 9
 
 Adafruit_NeoPixel strip(LED_COUNT, LED_PIN1, NEO_BRG + NEO_KHZ800), strip3(LED_COUNT, LED_PIN2, NEO_BRG + NEO_KHZ800);
 
@@ -64,7 +62,7 @@ long lastTime = 0;
 int beatIndex = 0;
 
 //for sensors
-int maxDistance = 30;
+int maxDistance = 15;
 int triggeredNo = 0;
 
 
@@ -163,7 +161,6 @@ void loop() {
   }
   else if (mode == "ripple") {
     // ripple with sensor
-
     bool sensor1Triggered = SensorIsTriggered(trigPin1, echoPin1);
     bool sensor2Triggered = SensorIsTriggered(trigPin2, echoPin2);
     bool sensor3Triggered = SensorIsTriggered(trigPin3, echoPin3);
@@ -174,25 +171,26 @@ void loop() {
     if (triggeredNo > 1) {
       CenterRipple(elapsedTime);
     } else if (triggeredNo == 1) {
-      if (sensor1Triggered) {
+      if (SensorIsTriggered(trigPin1, echoPin1)) {
         DirectionRipple1(elapsedTime);
       }
-      if (sensor2Triggered) {
+      if (SensorIsTriggered(trigPin2, echoPin2)) {
         DirectionRipple2(elapsedTime);
       }
-      if (sensor3Triggered) {
+      if (SensorIsTriggered(trigPin3, echoPin3)) {
         DirectionRipple3(elapsedTime);
       }
-      if (sensor4Triggered) {
+      if (SensorIsTriggered(trigPin4, echoPin4)) {
         DirectionRipple4(elapsedTime);
       }
-      if (sensor5Triggered) {
+      if (SensorIsTriggered(trigPin5, echoPin5)) {
         DirectionRipple5(elapsedTime);
       }
-      if (sensor6Triggered) {
+      if (SensorIsTriggered(trigPin6, echoPin6)) {
         DirectionRipple6(elapsedTime);
       }
     }
+    triggeredNo = 0;
   }
   else if (mode == "centerRipple") {
     // centerripple only
@@ -240,6 +238,8 @@ void loop() {
 
 
 
+
+// function starts HERE
 
 
 // function      -------- bread --------
@@ -495,7 +495,7 @@ bool SensorIsTriggered(int trigPin, int echoPin) {
   digitalWrite(trigPin, LOW);
 
   unsigned duration = pulseIn(echoPin, HIGH);
-  Serial.println(duration);
+  //  Serial.println(duration);
 
   int distance = duration * 0.034 / 2;
   Serial.print("Distance: ");
@@ -1206,11 +1206,11 @@ void storymode(long elapsedTime) {
   } else if (storymodeTime < 83000) { //83000
     rain_storymode();
 
-  } else if (storymodeTime < 98000) {  //98000
+  } else if (storymodeTime < 119000) {  //119000
     // sunshine
     sunshine_storymode();
 
-  } else if (storymodeTime < 134000) {
+  } else if (storymodeTime < 155000) {
     // rainbow
     rainbow_storymode();
   } else {
