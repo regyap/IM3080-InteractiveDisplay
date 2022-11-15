@@ -1,5 +1,6 @@
 #include <Adafruit_NeoPixel.h>
 #include <Arduino_JSON.h>
+#include <stdlib.h>
 #ifdef __AVR__
 #include <avr/power.h> // Required for 16 MHz Adafruit Trinket
 #endif
@@ -134,30 +135,43 @@ void setup() {
 }
 
 // from rasberry pi to arduino
-JSONVar payload = JSON.parse("{mode: 'bread', red: 255, green: 0, blue: 0}");
-String mode = "ripple";
+
+//JSONVar payload = JSON.parse("{\"mode\":\"storyMode\"}");
+//JSONVar payload = JSON.parse("{\"mode\" : \"bread\", \"red\" : \"255\", \"green\" : \"0\", \"blue\" : \"30\"}");
+//String mode = (const char*)payload["mode"];
+
+JSONVar payload;
+String mode;
 
 void loop() {
   if (Serial.available() > 0) {
     payload = JSON.parse(Serial.readStringUntil('\n'));
-    mode = payload["mode"];
+    mode = (const char*)payload["mode"];
+    Serial.flush();
   }
+  
 
   long elapsedTime = millis() - lastTime;
   lastTime = lastTime + elapsedTime;
 
   if (mode == "bread") {
-    uint32_t color = strip.Color(int(payload["red"]), int(payload["green"]), int(payload["blue"]));
-    //    breadColor(elapsedTime, color);
+    int red = atoi((const char*)payload["red"]);
+    int green = atoi((const char*)payload["green"]);
+    int blue = atoi((const char*)payload["blue"]);
+    uint32_t color = strip.Color(red, green, blue);
+    breadColor(elapsedTime, color);
 
     Serial.println(color);
-    bread(elapsedTime);
+//    bread(elapsedTime);
   }
   else if (mode == "sunflower") {
-    uint32_t color = strip.Color(int(payload["red"]), int(payload["green"]), int(payload["blue"]));
-    //    sunflowerColor(elapsedTime, color);
+    int red = atoi((const char*)payload["red"]);
+    int green = atoi((const char*)payload["green"]);
+    int blue = atoi((const char*)payload["blue"]);
+    uint32_t color = strip.Color(255, 0, 0);
+    sunflowerColor(elapsedTime, color);
 
-    sunflower(elapsedTime);
+//    sunflower(elapsedTime);
   }
   else if (mode == "ripple") {
     // ripple with sensor
@@ -196,20 +210,23 @@ void loop() {
     // centerripple only
 
     CenterRipple(elapsedTime);
-    Serial.println("CenterRipple only");
+//    Serial.println("CenterRipple only");
   }
   else if (mode == "directionRipple") {
     // DirectionRipple5 only
 
     DirectionRipple5(elapsedTime);
-    Serial.println("DirectionRipple5 only");
+//    Serial.println("DirectionRipple5 only");
   }
   else if (mode == "storyMode") {
     storymode(elapsedTime);
-    Serial.println("storyMode");
+//    Serial.println("storyMode");
   }
   else if (mode == "rgb") {
-    uint32_t color = strip.Color(int(payload["red"]), int(payload["green"]), int(payload["blue"]));
+    int red = atoi((const char*)payload["red"]);
+    int green = atoi((const char*)payload["green"]);
+    int blue = atoi((const char*)payload["blue"]);
+    uint32_t color = strip.Color(red, green, blue);
     strip.setPin(2);
     strip.fill(color);
     strip.setPin(3);
@@ -498,8 +515,8 @@ bool SensorIsTriggered(int trigPin, int echoPin) {
   //  Serial.println(duration);
 
   int distance = duration * 0.034 / 2;
-  Serial.print("Distance: ");
-  Serial.println(distance);
+//  Serial.print("Distance: ");
+//  Serial.println(distance);
 
   if (distance <= maxDistance) {
     triggeredNo += 1;
@@ -1216,7 +1233,7 @@ void storymode(long elapsedTime) {
   } else {
     storymodeTime = 0;
   }
-  Serial.println("OUT : " + String(storymodeTime));
+//  Serial.println("OUT : " + String(storymodeTime));
 
 }
 
@@ -1241,7 +1258,7 @@ void sky_storymode() {
 }
 
 void lightning_storymode() {
-  Serial.println("LIGHTNING : " + String(storymodeTime));
+//  Serial.println("LIGHTNING : " + String(storymodeTime));
   // thunder/lightning (11s)
 
   if (storymodeTime > 37000 && storymodeTime < 37300) {            // lightning
@@ -1270,7 +1287,7 @@ void lightning_storymode() {
 }
 
 void rain_storymode() {
-  Serial.println("RAINNNNNN : " + String(storymodeTime));
+//  Serial.println("RAINNNNNN : " + String(storymodeTime));
   const int maxpixels = 30;
 
   // rain (36s)

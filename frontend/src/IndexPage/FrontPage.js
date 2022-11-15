@@ -28,7 +28,8 @@ function FrontPage(props) {
 
   function emitReq(button) {
     setCurrentState(button);
-    const data = { mode: button };
+    const data = '{"mode" : "' + button + '"}';
+    console.log(data);
     socketOBJ.emit("buttonPressed", data);
   }
 

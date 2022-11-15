@@ -59,9 +59,11 @@ def exitQueue():
 
 @socket.on('buttonPressed')
 def buttonPressed(data):
-    text = data
+    text = str(data) + "\n"
+    ser.flushInput()
+    ser.flushOutput()
     ser.write(text.encode("utf-8"))
-    print(data + " transmited from frontend")
+    print(text + " transmited from frontend")
 
 @socket.on('connect')
 def connect():
@@ -120,8 +122,13 @@ if __name__ == '__main__':
     # app.run(host='0.0.0.0', port=5000, threaded=True)
     if os.path.exists("app.db"):
         os.remove("app.db")
+    
+    # For Windows
+    ser = serial.Serial(port='COM5', baudrate=9600, timeout=.1)
+    #For Linux
     # ser = serial.Serial("/dev/ttyACM0", 9600, timeout=1)
-    # ser.reset_input_buffer()
+
+    ser.reset_input_buffer()
     db.create_all()
     socket.start_background_task(target=backgroundQueueSocket)
     socket.start_background_task(target=sessionSocket)

@@ -10,7 +10,7 @@ function Interactive() {
   const [currentState, setCurrentState] = useState("");
 
   function emitReq(button) {
-    const data = { mode: button };
+    const data = '{"mode" : "' + button + '"}';
     console.log(data);
     setCurrentState(button);
     socketOBJ.emit("buttonPressed", data);
