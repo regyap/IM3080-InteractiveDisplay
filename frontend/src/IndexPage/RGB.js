@@ -5,7 +5,6 @@ import { Slider } from "@mui/material";
 import Button from "react-bootstrap/Button";
 import { useNavigate } from "react-router-dom";
 import "./RGB.css";
-import "./FrontPage.css";
 
 function RGB() {
   const [redValue, setRedValue] = useState(0);
@@ -71,14 +70,13 @@ function RGB() {
           Sunflower
         </button>
       </div>
-      <div className="forminput">
       <Card
         style={{
-          
+          width: "50rem",
           boxShadow:
             "inset 0 0 50px #fff,inset 20px 0 80px #f0f,inset -20px 0 80px #0ff,inset 20px 0 300px #f0f,inset -20px 0 300px #0ff",
           marginTop: "20px",
-        }} className="card"
+        }}
       >
         {/* <Card.Body>
           <Card.Title>Time Left</Card.Title>
@@ -119,12 +117,10 @@ function RGB() {
             min={0}
             max={255}
             onChange={(event, value) => changeVal("blue", value)}
-   
           />
           <label className="vlabel">{blueValue}</label>
         </div>
       </Card>
-      </div>
       <Button
         variant="danger"
         className="float-end"

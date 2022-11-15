@@ -1,6 +1,3 @@
-.card{
-  width:50em;
-}
 .sbox {
   display: flex;
   flex-direction: column;
@@ -34,43 +31,4 @@
   background-color: rgb(221, 221, 221);
   border-radius: 5px;
   width: 13%;
-}
-@media (min-width: 50px) and (max-width: 580px) {
-  .sliderbox{
-    width: 100%;
-  }
-  .card{
-    width:500px;
-    
-    
-  }
-  .forminput {
-    /* background-color: black; */
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    margin: 0px 10px;
-  }
-  /* .slabel{
-    width:30px;  }
-  .sliderbox {
-    height:1000px;
-    width: 30px;
-  
-  } */
-  .ihatethis{
-    width:1%;
-    height:auto;
-    
-  }
-  .vlabel {
-
-    width: 10%;
-  }
-
-  .sbox {
-
-    width: 200%;
-    height: 10%;
-  }
 }
