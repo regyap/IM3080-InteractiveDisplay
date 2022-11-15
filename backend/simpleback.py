@@ -64,7 +64,7 @@ def buttonPressed(data):
     print(data + " transmited from frontend")
 
 @socket.on('connect')
-def disconnect():
+def connect():
     Queue.query.filter_by(id=request.sid).delete()
     db.session.commit()
     print(request.sid + " connected")
