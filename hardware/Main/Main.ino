@@ -36,25 +36,25 @@
 #define LED_COUNT 50
 
 //Ultrasonic sensor pins [FILL IN PIN NO!!!]
-#define trigPin1 9
-#define trigPin2 6
-#define trigPin3 11
+#define trigPin1 6
+#define trigPin2 11
+#define trigPin3 9
 #define trigPin4 13
-#define trigPin5 24
-#define trigPin6 53
+#define trigPin5 53
+#define trigPin6 24
 
-#define echoPin1 8
-#define echoPin2 5
-#define echoPin3 10
+#define echoPin1 5
+#define echoPin2 10
+#define echoPin3 8
 #define echoPin4 12
-#define echoPin5 23
-#define echoPin6 52
+#define echoPin5 52
+#define echoPin6 23
 
 Adafruit_NeoPixel strip(LED_COUNT, LED_PIN1, NEO_BRG + NEO_KHZ800), strip3(LED_COUNT, LED_PIN2, NEO_BRG + NEO_KHZ800);
 
 int brightness = 250;
 uint32_t color = strip.Color(0, 0, 255);
-int timeInterval = 300;
+int timeInterval = 600;
 
 //For multithreading
 long lastTime = 0;
@@ -203,21 +203,36 @@ void loop() {
       if (SensorIsTriggered(trigPin6, echoPin6)) {
         DirectionRipple6(elapsedTime);
       }
+    } else if (triggeredNo == 0){
+      TurnOff(LED_PIN1);
+      TurnOff(LED_PIN8);
+      TurnOff(LED_PIN9);
+      TurnOff(LED_PIN12);
+      TurnOff(LED_PIN14);
+      TurnOff(LED_PIN17);
+      TurnOff(LED_PIN18);
+      TurnOff(LED_PIN3);
+      TurnOff(LED_PIN4);
+      TurnOff(LED_PIN5);
+      TurnOff(LED_PIN7);
+      TurnOff(LED_PIN10);
+      TurnOff(LED_PIN11);
+      TurnOff(LED_PIN15);
+      TurnOff(LED_PIN16);
+      TurnOff(LED_PIN19);
+      TurnOff(LED_PIN21);
+      TurnOff(LED_PIN22);
+      TurnOff(LED_PIN23);
+      TurnOff(LED_PIN13);
+      TurnOff(LED_PIN2);
+      TurnOff(LED_PIN6);
+      TurnOff(LED_PIN20);
+      TurnOff(LED_PIN24);
+      TurnOff(LED_PIN25);
     }
     triggeredNo = 0;
   }
-  else if (mode == "centerRipple") {
-    // centerripple only
 
-    CenterRipple(elapsedTime);
-//    Serial.println("CenterRipple only");
-  }
-  else if (mode == "directionRipple") {
-    // DirectionRipple5 only
-
-    DirectionRipple5(elapsedTime);
-//    Serial.println("DirectionRipple5 only");
-  }
   else if (mode == "storyMode") {
     storymode(elapsedTime);
 //    Serial.println("storyMode");
@@ -545,7 +560,6 @@ void TurnOff(int pin) {
 void CenterRipple(long elapsedTime) {
   static long ledTime = 0;
   ledTime += elapsedTime;
-  static int counter = 0;
   //  Serial.println(counter);
   if (ledTime < timeInterval) {
     brightness = 255; //Brightness decreases for each ripple wave
@@ -617,6 +631,9 @@ void CenterRipple(long elapsedTime) {
     TurnOff(LED_PIN20);
     TurnOff(LED_PIN24);
     TurnOff(LED_PIN25);
+
+    ledTime -= timeInterval * 4;
+    
   }
 }
 
@@ -1014,7 +1031,7 @@ void DirectionRipple5(long elapsedTime) {
   static long ledTime = 0;
   ledTime += elapsedTime;
 
-  static int counter = 0;
+//  static int counter = 0;
   //  Serial.println(counter);
   if (ledTime <= timeInterval) {
     brightness = 255;
@@ -1223,11 +1240,11 @@ void storymode(long elapsedTime) {
   } else if (storymodeTime < 83000) { //83000
     rain_storymode();
 
-  } else if (storymodeTime < 119000) {  //119000
+  } else if (storymodeTime < 98000) {  //119000
     // sunshine
     sunshine_storymode();
 
-  } else if (storymodeTime < 155000) {
+  } else if (storymodeTime < 134000) {
     // rainbow
     rainbow_storymode();
   } else {

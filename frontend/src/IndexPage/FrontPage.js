@@ -7,7 +7,6 @@ import "./FrontPage.css";
 function FrontPage(props) {
   const navigate = useNavigate();
   const [timeLeft, setTimeLeft] = useState("");
-  const [inUse, setInUse] = useState(true);
   const [currentState, setCurrentState] = useState("");
   // use timeleft countdown 3min use state, dont select.
 
